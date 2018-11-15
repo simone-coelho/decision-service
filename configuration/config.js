@@ -46,6 +46,10 @@ let config = {
     REDIS_PORT: process.env.REDIS_PORT || '6379',
     REDIS_AUTH: process.env.REDIS_AUTH || '',
   },
+  server: {
+    // HTTP Server
+    NODE_PORT: process.env.NODE_PORT || 9090,
+  },
 };
 
 // Default datafile URL paths by Key and Project ID

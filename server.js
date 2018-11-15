@@ -13,12 +13,13 @@ const http = require('http');
 const url = require('url');
 const methods = require('./rpc/methods');
 const types = require('./types/types');
+const server_config = require('../configuration/config').server;
 const optimizely = require('./optimizely/optimizely_manager');
 
 let server = http.createServer(requestListener);
-const PORT = process.env.NODE_PORT || 9090;
+const PORT = server_config.NODE_PORT;
 
-//Initialize and get the datafile on server start
+// Initialize and get the datafile on server start
 let appOptlyInstance;
 optimizely.getInstance().then(optly => {
   appOptlyInstance = optly;
