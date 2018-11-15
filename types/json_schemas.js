@@ -7,10 +7,11 @@
  *
  */
 
+/**
+ * JSON Schema Definitions
+ * Used to validate the RPC method objects passed in as parameters.
+ */
 const schemas = {
-  /**
-   *
-   */
   experiments: {
     'type': 'object',
     'properties': {

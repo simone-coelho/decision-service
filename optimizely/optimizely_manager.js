@@ -50,6 +50,7 @@ datafileManager.on('updated_datafile', function(datafile, prevRev, newRev) {
 
 /**
  * Reinitialize the Optimizely client instance
+ *
  * @param {Object} datafile
  *   The project configuration datafile used to instantiate the sdk
  */
@@ -61,6 +62,7 @@ function reInitializeClient(datafile) {
 module.exports = {
   /**
    * Get the singleton sdk client instance.
+   *
    * @return {Object}
    *   The optimizely sdk client instance
    */
@@ -86,6 +88,7 @@ module.exports = {
   /**
    * Activates an experiment and returns the variation. This function supports the
    * RPC 'experiment' function in methods.js.
+   *
    * @param expObj
    *   The experiment object is created and passed in by RPC method JSON param.
    * @returns {Promise<*>}
@@ -124,6 +127,7 @@ module.exports = {
 
 /**
  * Creates the sdk client instance.
+ *
  * @param datafile
  *   Datafile with current project configuration.
  * @returns {object}
@@ -150,6 +154,7 @@ function _getInstance(datafile) {
 
 /**
  * Retrieves the project configuration datafile.
+ *
  * @param url
  *   The url path to the CDN or location of the datafile.
  * @returns {Promise<*>}
@@ -163,6 +168,7 @@ async function getDataFile(url) {
 
 /**
  * Retrieves the user profile from the data store.
+ *
  * @param userId
  *   The User ID used to activate an experiment or feature.
  * @returns {Promise<*>}
@@ -184,6 +190,7 @@ async function getUserProfileMap(userId) {
 
 /**
  * Saves the user profile map to the data store.
+ *
  * @param {object} userProfileMap
  *   The updated user profile map object.
  * @returns {Promise<void>}
@@ -199,6 +206,7 @@ async function saveUserProfileMap(userProfileMap) {
 
 /**
  * Register required functions with the sdk to load and save the user profile.
+ *
  * @type {{lookup: (function(*): string), save: userProfileService.save}}
  */
 let userProfileService = {
@@ -216,6 +224,7 @@ let userProfileService = {
  *  Register notification Listeners.
  *  Activate: notifies every time an experiment is activated.
  *  Track:    notifies every time a track event is made.
+ *
  *  @param {object} optlyClient
  *    The active sdk client instance.
  */
@@ -235,6 +244,7 @@ function registerListeners(optlyClient) {
 
 /**
  * Listen to activated experiments.
+ *
  * @param activateObject
  *   Contains the experiment information like experiment, user and variation ID
  */
@@ -246,6 +256,7 @@ function onActivate(activateObject) {
 
 /**
  * Listen to tracking events.
+ *
  * @param trackObject
  *   Contains the event information like event and user ID
  */

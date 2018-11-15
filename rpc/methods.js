@@ -13,7 +13,8 @@ const optimizely = require('../optimizely/optimizely_manager');
  */
 let methods = {
   /**
-   * Track conversion events.
+   * Activates an experiment and obtains a variation.
+   *
    * @param expObj
    *   Experiment JSON object.
    *   Refer to types.js for a description of the JSON schema definitions.
@@ -49,6 +50,7 @@ let methods = {
 
   /**
    * Track conversion events.
+   *
    * @param trackObj
    *   Refer to types.js for a description of the JSON schema definition.
    * @returns {Promise<any>}
@@ -87,6 +89,7 @@ let methods = {
 
   /**
    * Activate a feature test or check for enabled feature rollouts.
+   *
    * @param featuresObj
    *   Refer to types.js for a description of the JSON schema definition.
    * @returns {Promise<any>}
@@ -172,6 +175,7 @@ let methods = {
 
   /**
    * Work in progress - Not functional
+   *
    * @param taskObj
    * @returns {Promise<any | never>}
    */

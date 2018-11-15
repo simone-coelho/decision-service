@@ -17,7 +17,9 @@ const schedule = require('node-schedule');
 // EventEmitter object
 let datafileEvent = new EventEmitter();
 
-// Scheduler responsible for datafile download at defined interval.
+/**
+ * Scheduler responsible for datafile download at defined interval.
+ */
 schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
   const previousRevision = sdk.DATAFILE_REVISION;
   let datafile = fetchDatafile(sdk.DATAFILE_URL, '');
@@ -28,6 +30,7 @@ schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
 
 
 /**
+ * Fetches any datafile from a CDN or remote server.
  *
  * @param url
  * @returns {Promise<any>}
@@ -38,6 +41,7 @@ async function fetchFileSync(url) {
 }
 
 /**
+ * Fetches the SDK datafile from a CDN or remote server.
  *
  * @param url
  * @param dest
@@ -61,6 +65,5 @@ async function fetchDatafile(url, dest) {
 }
 
 
-// export the EventEmitter object
 module.exports = datafileEvent;
 module.exports.downloadFileSync = fetchDatafile;

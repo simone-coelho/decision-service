@@ -14,6 +14,14 @@ const ajv = new Ajv({
   useDefaults: true,
 });
 
+/**
+ * JSON Object Schema Validators
+ *
+ * @type {{experiments:ajv.ValidateFunction,
+ * features:ajv.ValidateFunction,
+ * feature_test:ajv.ValidateFunction,
+ * track:ajv.ValidateFunction, ajv:ajv | ajv.Ajv}}
+ */
 let validators = {
   experiments: ajv.compile(schemas.experiments),
   features: ajv.compile(schemas.features),

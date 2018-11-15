@@ -25,6 +25,7 @@ module.exports = {
    */
   dbClient: redisClient,
   /**
+   * Saves the datafile to the data store.
    *
    * @param projectId
    * @param datafile
@@ -41,7 +42,8 @@ module.exports = {
   },
 
   /**
-   * Loads a datafile from the data store.
+   * Loads the datafile from the data store.
+   *
    * @param projectId
    * @returns {Promise<*>}
    */

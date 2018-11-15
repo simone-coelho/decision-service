@@ -25,6 +25,7 @@ module.exports = {
 
   /**
    * Reads a file from disk.
+   *
    * @param path
    * @param options
    * @returns {Promise<any>}
@@ -40,6 +41,7 @@ module.exports = {
   },
 
   /**
+   * Writes a datafile to disk.
    *
    * @param path
    * @param data

@@ -27,13 +27,16 @@ optimizely.getInstance().then(optly => {
 });
 
 
-/**
- *
- * @type {{"/rpc": (function(*=): Promise<any>), "/describe": (function(): Promise<any>)}}
- */
 let routes = {
-  // this is the rpc endpoint
-  // every operation request will come through here
+  /**
+   * Defines the different url paths that our application will respond to. This is
+   * the rpc endpoint every operation request will come through here.
+   *
+   * @param body
+   *   The JSON object in the request body that represents an individual function or method.
+   * @returns {Promise<any>}
+   *   Original JSON object with corresponding result(s) appended.
+   */
   '/rpc': function(body) {
     return new Promise((resolve, reject) => {
       let _json = JSON.parse(body); // might throw error
@@ -76,12 +79,13 @@ let routes = {
     });
   },
 
-  // this is our docs endpoint
-  // through this the clients should know
-  // what methods and data types are available
+
   /**
+   * Describe endpoint, scans through the descriptions of both the methods
+   * and the data types, and returns that information to the caller.
    *
    * @returns {Promise<any>}
+   *   JSON Object with the descriptions for the different methods.
    */
   '/describe': function() {
     // load the type descriptions
@@ -105,9 +109,10 @@ let routes = {
   },
 };
 
-// request Listener
-// this is what we'll feed into http.createServer
+
 /**
+ * This function is called every time there is a new request, we wait on the data
+ * coming in, after which, we look at the path, and match it to a handler on the routing table.
  *
  * @param request
  * @param response
@@ -117,7 +122,7 @@ function requestListener(request, response) {
   let parseUrl = url.parse(reqUrl, true);
   let pathname = parseUrl.pathname;
 
-  // we're doing everything json
+  // we're doing everything as json
   response.setHeader('Content-Type', 'application/json');
 
   // buffer for incoming data
@@ -140,9 +145,6 @@ function requestListener(request, response) {
       let compute = routes[pathname].call(null, body);
 
       if (!(compute instanceof Promise)) {
-        // we're kinda expecting compute to be a promise
-        // so if it isn't, just avoid it
-
         response.statusCode = 500;
         response.end(
             JSON.stringify({Message: 'Server error: Invalid Promise'}));
