@@ -28,7 +28,7 @@ module.exports = {
    *
    * @param path
    * @param options
-   * @returns {Promise<any>}
+   * @returns {Promise<object>}
    */
   readFile: function(path, options = 'utf8') {
     return new Promise((resolve, reject) => {
@@ -46,14 +46,14 @@ module.exports = {
    * @param path
    * @param data
    * @param options
-   * @returns {Promise<any>}
+   * @returns {Promise<string>}
    */
   writeFile: (path, data, options = 'utf8') => {
     //noinspection JSIgnoredPromiseFromCall
     new Promise((resolve, reject) => {
       fs.writeFile(path, data, options, (err) => {
         if (err) reject(err);
-        else resolve();
+        else resolve('File successfully saved: ' + path);
       });
     });
 

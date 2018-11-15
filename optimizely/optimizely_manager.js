@@ -19,7 +19,7 @@ const sdk = config.sdk;
 const database = require('../database/database');
 const datafileManager = require('./datafile_manager');
 
-// Register the logger with sdk.
+// Register the logger with the sdk.
 const defaultLogger = require('@optimizely/optimizely-sdk/lib/plugins/logger');
 const LOG_LEVEL = require(
     '@optimizely/optimizely-sdk/lib/utils/enums').LOG_LEVEL;
@@ -31,15 +31,14 @@ const NOTIFICATION_TYPES = require(
 let activeUserId = '';
 let cachedUserProfileMap = '';
 
-// Possible future use in saving user state
+// Possible future use in saving user state.
 let experimentActivated = false;
 
-
-// Singleton instance of the optimizely object
+// Singleton instance of the optimizely object.
 let optlyInstance;
 
 /**
- * Notification listener for new datafile download updates
+ * Notification listener for new datafile download updates.
  */
 datafileManager.on('updated_datafile', function(datafile, prevRev, newRev) {
     reInitializeClient(datafile);
@@ -52,7 +51,7 @@ datafileManager.on('updated_datafile', function(datafile, prevRev, newRev) {
  * Reinitialize the Optimizely client instance
  *
  * @param {Object} datafile
- *   The project configuration datafile used to instantiate the sdk
+ *   The project configuration datafile used to instantiate the sdk.
  */
 function reInitializeClient(datafile) {
   optlyInstance = null;
@@ -67,7 +66,7 @@ module.exports = {
    *   The optimizely sdk client instance
    */
   async getInstance(datafile) {
-    // check if we have a active datafile or if we are forced to re-fetch it
+    // Check if we have a active datafile or if we are forced to re-fetch it.
     let instance = null;
 
     if (!sdk.DATAFILE || datafile) {
@@ -90,7 +89,7 @@ module.exports = {
    * RPC 'experiment' function in methods.js.
    *
    * @param expObj
-   *   The experiment object is created and passed in by RPC method JSON param.
+   *   The experiment object is created and passed in by the RPC method JSON param.
    * @returns {Promise<*>}
    *   Experiment object with assigned variation.
    */
@@ -114,7 +113,8 @@ module.exports = {
   },
 
   /**
-   * Returns the cached current datafile
+   * Returns the cached current datafile.
+   *
    * @return {Object}
    */
   getCachedDataFile() {
@@ -131,7 +131,7 @@ module.exports = {
  * @param datafile
  *   Datafile with current project configuration.
  * @returns {object}
- *   Optimizely sdk client instance
+ *   Optimizely sdk client instance.
  * @private
  */
 function _getInstance(datafile) {
@@ -139,7 +139,7 @@ function _getInstance(datafile) {
     optlyInstance = optimizely.createInstance({
       datafile,
       userProfileService,
-      // This should be set to/ false if we modify the activeDatafile in any way
+      // This should be set to/ false if we modify the activeDatafile in any way.
       skipJSONValidation: true,
       logger: defaultLogger.createLogger({
         logLevel: LOG_LEVEL.INFO,
@@ -206,8 +206,6 @@ async function saveUserProfileMap(userProfileMap) {
 
 /**
  * Register required functions with the sdk to load and save the user profile.
- *
- * @type {{lookup: (function(*): string), save: userProfileService.save}}
  */
 let userProfileService = {
   lookup: function(userId) {
@@ -246,7 +244,7 @@ function registerListeners(optlyClient) {
  * Listen to activated experiments.
  *
  * @param activateObject
- *   Contains the experiment information like experiment, user and variation ID
+ *   Contains the experiment information such as experiment, user and variation ID.
  */
 function onActivate(activateObject) {
   //console.info(
@@ -258,7 +256,7 @@ function onActivate(activateObject) {
  * Listen to tracking events.
  *
  * @param trackObject
- *   Contains the event information like event and user ID
+ *   Contains the event information such as event and user ID.
  */
 function onTrack(trackObject) {
   //console.info(`Tracking called for event ${trackObject.eventKey}`);

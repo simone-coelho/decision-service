@@ -30,11 +30,11 @@ optimizely.getInstance().then(optly => {
 let routes = {
   /**
    * Defines the different url paths that our application will respond to. This is
-   * the rpc endpoint every operation request will come through here.
+   * the RPC endpoint and every operation/method request will come through here.
    *
    * @param body
    *   The JSON object in the request body that represents an individual function or method.
-   * @returns {Promise<any>}
+   * @returns {Promise<object>}
    *   Original JSON object with corresponding result(s) appended.
    */
   '/rpc': function(body) {
@@ -82,15 +82,15 @@ let routes = {
 
   /**
    * Describe endpoint, scans through the descriptions of both the methods
-   * and the data types, and returns that information to the caller.
+   * and the data types, and returns that information in the response.
    *
-   * @returns {Promise<any>}
-   *   JSON Object with the descriptions for the different methods.
+   * @returns {Promise<object>}
+   *   JSON Object with the descriptions for the all the methods supported.
    */
   '/describe': function() {
     // load the type descriptions
     return new Promise(resolve => {
-      let type = {};
+      let type;
       let method = {};
 
       // set types

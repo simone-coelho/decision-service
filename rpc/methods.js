@@ -18,7 +18,7 @@ let methods = {
    * @param expObj
    *   Experiment JSON object.
    *   Refer to types.js for a description of the JSON schema definitions.
-   * @returns {Promise<any>}
+   * @returns {Promise<object>}
    *   Contains expObj with assigned variation.
    */
   experiment: {
@@ -53,8 +53,8 @@ let methods = {
    *
    * @param trackObj
    *   Refer to types.js for a description of the JSON schema definition.
-   * @returns {Promise<any>}
-   *   Contains trackObj with acknowledgement message of success or failure.
+   * @returns {Promise<object>}
+   *   trackObj with acknowledgement message of success or failure.
    */
   track: {
     description: `track a conversion event`,
@@ -92,8 +92,8 @@ let methods = {
    *
    * @param featuresObj
    *   Refer to types.js for a description of the JSON schema definition.
-   * @returns {Promise<any>}
-   *   Contains featuresObj and all enabled features and variable values if defined.
+   * @returns {Promise<object>}
+   *   featuresObj and all enabled features and variable values if defined.
    */
   features: {
     description: `activates a feature rollout or feature test and returns variable values if any`,
@@ -163,7 +163,6 @@ let methods = {
                   feature_config[key] = null;
               }
             }
-            ;
           }
           resolve(featuresObj);
         }).catch(function() {
@@ -177,7 +176,7 @@ let methods = {
    * Work in progress - Not functional
    *
    * @param taskObj
-   * @returns {Promise<any | never>}
+   * @returns {Promise<object | string>}
    */
   task: {
     description: `creates a new task, and returns the details of the new task`,

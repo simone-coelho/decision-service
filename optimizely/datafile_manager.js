@@ -33,7 +33,7 @@ schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
  * Fetches any datafile from a CDN or remote server.
  *
  * @param url
- * @returns {Promise<any>}
+ * @returns {Promise<object>}
  */
 async function fetchFileSync(url) {
   const response = await fetch(url);
