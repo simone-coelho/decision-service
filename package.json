@@ -1,0 +1,28 @@
+{
+  "name": "noderpc",
+  "version": "0.0.0",
+  "description": "tutorial project for node.js rpc based api",
+  "main": "server.js",
+  "dependencies": {
+    "@optimizely/optimizely-sdk": "^2.3.1",
+    "ajv": "^6.5.5",
+    "async-redis": "^1.1.4",
+    "fastify": "^1.13.0",
+    "fastify-redis": "^2.0.0",
+    "ioredis": "^4.2.0",
+    "node-fetch": "^2.3.0",
+    "node-schedule": "^1.3.0",
+    "optimizely-server-sdk": "^1.5.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "string-placeholder": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "forever -w server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Alloys Mila",
+  "license": "MIT"
+}
