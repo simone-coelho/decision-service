@@ -22,9 +22,9 @@ let methods = {
    *   Contains expObj with assigned variation.
    */
   experiment: {
-    description: `activates the experiment, and returns the variation`,
+    description: `activates the experiment, and returns the assigned variation`,
     params: ['experiment: the experiment object'],
-    returns: ['experiment object with variation key'],
+    returns: ['experiment object with variation key assigned'],
     exec(expObj) {
       return new Promise((resolve, reject) => {
         if (typeof (expObj) !== 'object') {
@@ -96,9 +96,9 @@ let methods = {
    *   featuresObj and all enabled features and variable values if defined.
    */
   features: {
-    description: `activates a feature flag or feature test and returns variable values if any`,
+    description: `activates a feature flag or feature test and returns the variable values if any`,
     params: ['features: the features object'],
-    returns: ['features object with variable values if requested'],
+    returns: ['features object with the variable values if requested'],
     exec(featuresObj) {
       return new Promise((resolve, reject) => {
         if (typeof (featuresObj) !== 'object') {

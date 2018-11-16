@@ -16,8 +16,10 @@ let types = {
       experiment_key: ['string', 'required'],
       user_id: ['string', 'required'],
       attributes: ['object', 'optional'],
-      variation_key: ['string', 'returned variation key'],
+      variation_key: ['string', 'returns the variation key assigned'],
       project_id: ['string', 'optional [currently not implemented]'],
+      datafile_url: ['string', 'optional [currently not implemented]'],
+      datafile_key: ['string', 'optional [currently not implemented]'],
     },
   },
   features: {
@@ -28,9 +30,9 @@ let types = {
       attributes: ['object', 'optional'],
       feature_test_key: [
         'string',
-        'optional - if variation is needed in response'],
-      variation_key: ['string', 'returns variation key'],
-      is_enabled: ['boolean', 'returned "true" if feature is enabled'],
+        'optional - returns feature test key if feature is in a test'],
+      variation_key: ['string', 'returns variation key for the feature test'],
+      is_enabled: ['boolean', 'returns "true" if feature is enabled'],
       feature_config: ['object', 'returns feature variable values'],
     },
   },
@@ -39,9 +41,9 @@ let types = {
     props: {
       event_key: ['string', 'required'],
       user_id: ['string', 'required'],
-      attributes: ['object', 'optional but must include empty object'],
+      attributes: ['object', 'optional'],
       tags: ['array of objects', 'optional'],
-      acknowledgement: ['string', 'returned conversion result'],
+      acknowledgement: ['string', 'returns "success" or error message'],
     },
   },
   task: {

@@ -34,6 +34,18 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
+      'project_id': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_url': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_key': {
+        'type': 'string',
+        'default': '',
+      },
     },
     'required': [
       'experiment_key',
