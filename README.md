@@ -87,6 +87,7 @@ Required:
 Optional:
 * attributes
 * feature_config
+* **feature_test_key** must be included if you want the **"variation_key"** to be included in the response for a feature test.
 
 ```json
 {
@@ -101,7 +102,6 @@ Optional:
 
 #### Response
 
- * **"feature_test_key"** is appended to the response if the feature is in a test.
  * **"variation_key"** is appended to the response if the feature is in a test.
  * **"is_enabled"** true or false value is appended to the response.
  * **"feature_config"** has been modified and returns the values assigned to the feature varibles if they exist.
