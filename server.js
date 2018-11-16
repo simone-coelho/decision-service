@@ -13,7 +13,7 @@ const http = require('http');
 const url = require('url');
 const methods = require('./rpc/methods');
 const types = require('./types/types');
-const server_config = require('../configuration/config').server;
+const server_config = require('./configuration/config').server;
 const optimizely = require('./optimizely/optimizely_manager');
 
 let server = http.createServer(requestListener);

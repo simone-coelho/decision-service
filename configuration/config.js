@@ -36,6 +36,8 @@ let config = {
     DATAFILE_REVISION: 0,
 
     // Update settings
+
+    // Update interval currently defaults to 15 minutes.
     UPDATE_INTERVAL: '*/15 * * * *',
     WEBHOOK_URL: process.env.WEBHOOK_URL || '',
     WEBHOOK_TOKEN: process.env.WEBHOOK_TOKEN || '',

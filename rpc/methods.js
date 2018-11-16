@@ -88,7 +88,7 @@ let methods = {
   },
 
   /**
-   * Activate a feature test or check for enabled feature rollouts.
+   * Activate a feature test or check for enabled feature flags.
    *
    * @param featuresObj
    *   Refer to types.js for a description of the JSON schema definition.
@@ -96,9 +96,9 @@ let methods = {
    *   featuresObj and all enabled features and variable values if defined.
    */
   features: {
-    description: `activates a feature rollout or feature test and returns variable values if any`,
-    params: [],
-    returns: ['features object'],
+    description: `activates a feature flag or feature test and returns variable values if any`,
+    params: ['features: the features object'],
+    returns: ['features object with variable values if requested'],
     exec(featuresObj) {
       return new Promise((resolve, reject) => {
         if (typeof (featuresObj) !== 'object') {
@@ -179,7 +179,7 @@ let methods = {
    * @returns {Promise<object | string>}
    */
   task: {
-    description: `creates a new task, and returns the details of the new task`,
+    description: `[Not functional] creates a new task, and returns the details of the new task`,
     params: ['task: the task object'],
     returns: ['task'],
     exec(taskObj) {

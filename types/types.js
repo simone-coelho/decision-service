@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2018, Simone A. Coelho - Optimizely
+ *
+ * Module:          ds_rpc
+ * File Name:       types.js
+ * Last Modified:   11/15/18 1:37 AM
+ *
+ */
+
 'use strict';
 
 let types = {
@@ -6,9 +15,9 @@ let types = {
     props: {
       experiment_key: ['string', 'required'],
       user_id: ['string', 'required'],
-      attributes: ['object', 'optional but must include empty object'],
+      attributes: ['object', 'optional'],
       variation_key: ['string', 'returned variation key'],
-      project_id: ['string', 'optional'],
+      project_id: ['string', 'optional [currently not implemented]'],
     },
   },
   features: {
@@ -16,7 +25,7 @@ let types = {
     props: {
       feature_key: ['string', 'required'],
       user_id: ['string', 'required'],
-      attributes: ['object', 'optional but must include empty object'],
+      attributes: ['object', 'optional'],
       feature_test_key: [
         'string',
         'optional - if variation is needed in response'],
@@ -31,7 +40,7 @@ let types = {
       event_key: ['string', 'required'],
       user_id: ['string', 'required'],
       attributes: ['object', 'optional but must include empty object'],
-      tags: ['array of objects', 'optional but must include empty object'],
+      tags: ['array of objects', 'optional'],
       acknowledgement: ['string', 'returned conversion result'],
     },
   },
