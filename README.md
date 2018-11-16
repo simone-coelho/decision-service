@@ -231,9 +231,17 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ],
                 "variation_key": [
                     "string",
-                    "returned variation key"
+                    "returns the variation key assigned"
                 ],
                 "project_id": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_url": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_key": [
                     "string",
                     "optional [currently not implemented]"
                 ]
@@ -256,15 +264,15 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ],
                 "feature_test_key": [
                     "string",
-                    "optional - if variation is needed in response"
+                    "optional - returns feature test key if feature is in a test"
                 ],
                 "variation_key": [
                     "string",
-                    "returns variation key"
+                    "returns variation key for the feature test"
                 ],
                 "is_enabled": [
                     "boolean",
-                    "returned \"true\" if feature is enabled"
+                    "returns \"true\" if feature is enabled"
                 ],
                 "feature_config": [
                     "object",
@@ -285,7 +293,7 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ],
                 "attributes": [
                     "object",
-                    "optional but must include empty object"
+                    "optional"
                 ],
                 "tags": [
                     "array of objects",
@@ -293,7 +301,7 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ],
                 "acknowledgement": [
                     "string",
-                    "returned conversion result"
+                    "returns \"success\" or error message"
                 ]
             }
         },
@@ -317,12 +325,12 @@ The describe endpoint, scans through the descriptions of both the methods and th
     },
     "methods": {
         "experiment": {
-            "description": "activates the experiment, and returns the variation",
+            "description": "activates the experiment, and returns the assigned variation",
             "params": [
                 "experiment: the experiment object"
             ],
             "returns": [
-                "experiment object with variation key"
+                "experiment object with variation key assigned"
             ]
         },
         "track": {
@@ -335,12 +343,12 @@ The describe endpoint, scans through the descriptions of both the methods and th
             ]
         },
         "features": {
-            "description": "activates a feature flag or feature test and returns variable values if any",
+            "description": "activates a feature flag or feature test and returns the variable values if any",
             "params": [
                 "features: the features object"
             ],
             "returns": [
-                "features object with variable values if requested"
+                "features object with the variable values if requested"
             ]
         },
         "task": {
