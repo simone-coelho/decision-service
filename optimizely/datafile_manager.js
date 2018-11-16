@@ -22,15 +22,38 @@ let datafileEvent = new EventEmitter();
  */
 schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
   const previousRevision = sdk.DATAFILE_REVISION;
-  let datafile = fetchDatafile(sdk.DATAFILE_URL, '');
-  if ((datafile) && (previousRevision !== sdk.DATAFILE.revision)) {
-    datafileEvent.emit('updated_datafile', sdk.DATAFILE, previousRevision, sdk.DATAFILE_REVISION);
-  }
+  fetchFileAsync(sdk.DATAFILE_URL).then(function(response) {
+    return response.json();
+  }).then(function(jsonData) {
+    let datafile = jsonData;
+    if (datafile) {
+      utils.writeFile(sdk.DATAFILE_PATH, JSON.stringify(datafile));
+      sdk.DATAFILE = datafile;
+      sdk.DATAFILE_REVISION = sdk.DATAFILE.revision;
+      console.log('Successfully downloaded datafile: ' + sdk.DATAFILE_URL + ' [Revision: ' +
+          sdk.DATAFILE.revision + ']');
+      if ((datafile) && (previousRevision !== sdk.DATAFILE.revision)) {
+        datafileEvent.emit('updated_datafile', sdk.DATAFILE, previousRevision,
+            sdk.DATAFILE_REVISION);
+      }
+    }
+  }).catch(function(error) {
+    console.log('Error: ', error);
+  });
 });
 
+/**
+ * Fetches "async" a datafile from a CDN or remote server.
+ *
+ * @param url
+ * @returns {Promise<object>}
+ */
+function fetchFileAsync(url) {
+  return fetch(url);
+}
 
 /**
- * Fetches any datafile from a CDN or remote server.
+ * Fetches a datafile from a CDN or remote server.
  *
  * @param url
  * @returns {Promise<object>}
@@ -63,7 +86,6 @@ async function fetchDatafile(url, dest) {
     return null;
   }
 }
-
 
 module.exports = datafileEvent;
 module.exports.downloadFileSync = fetchDatafile;
