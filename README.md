@@ -94,6 +94,7 @@ Optional:
     "features": {
         "feature_key":"feature_2",
         "user_id":"123456789",
+	"feature_test_key": "feature_2_test",
         "attributes": {"test_user":"true"},
          "feature_config": {"string_2": "string", "boolean_2": "boolean"}
     }
