@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "a72a170d-478f-4893-9864-fd2f87e75cd3",
+		"name": "DS RPC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RPC - Describe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9090/describe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"describe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPC - Experiment A/B Test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"experiment\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"variation_key\":\"\"\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:9090/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"rpc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPC - Feature Rollout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"features\": {\r\n        \"feature_key\":\"feature_1\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"is_enabled\": false,\r\n        \"variation_key\":\"\",\r\n        \"feature_config\": {\"integer_1\": \"integer\", \"string_1\": \"string\", \"boolean_1\": \"boolean\", \"float_1\": \"double\"}\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:9090/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"rpc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPC - Feature Test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"features\": {\r\n        \"feature_key\":\"feature_2\",\r\n        \"feature_test_key\":\"feature_2_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"is_enabled\": false,\r\n        \"variation_key\":\"\",\r\n        \"feature_config\": {\"string_2\": \"string\", \"boolean_2\": \"boolean\"}\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:9090/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"rpc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RPC - Track Event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"track\": {\r\n        \"event_key\":\"test_tracking\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"tags\": {},        \r\n        \"acknowledgement\":\"\"\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:9090/rpc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"rpc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
