@@ -15,7 +15,7 @@ The following instructions will get the project up and running on your local mac
 * Install [Redis](https://redis.io/download) locally. 
 	* By default the decision service is configured to connect to '127.0.0.1:6379'.
 	* This setting can be configured in the 'config.js' file located in the 'config directory'.
-* Datafile settings are also configured in the 'config.js' file located in the 'config directory'.
+* Datafile settings, like CDN url and SDK key, are also configured in the 'config.js' file located in the 'config directory'.
 
 ### Running the server
 
@@ -31,7 +31,7 @@ All methods are routed through two endpoints.
 * GET - http:// {your_server} /describe
 	* Example: http://localhost:9090/describe
 
-**Note:** You can find an exported Postman collections file, "DS RPC.postman_collection.json", in the "postman" directory in this projet that contains 5 requests that you can use for testing. These requests will work with the default server configuration that uses an already configured full stack test that is currently running in Optimizely.
+**Note:** You can find an exported Postman collections file, "DS RPC.postman_collection.json", in the "postman" directory in this project that contains 5 requests that you can use for testing. These requests will work with the default server configuration that uses an already configured full stack test that is currently running in Optimizely.
 
 ----
 
@@ -127,7 +127,7 @@ Optional:
 
 
 #### Working with feature variables
-Retrieving the feature variable values is accomplished by including the variable names and their corresponding data type in the **"feature_config"** property. You may request all of the variables at once or limit the request to individual or group of variables. 
+Retrieving the feature variable values is accomplished by including the variable names and their corresponding data type in the **"feature_config"** property. You may request all of the variables at once or limit the request to an individual variable or a limited group of variables. 
 
 The accepted data types are:
 * string
@@ -135,7 +135,7 @@ The accepted data types are:
 * integer
 * double
 
-A variable named **"screen_width"** that has a defined data type of integer would be requested in the following way:
+A variable named **"screen_width"** that has an integer data type would be requested in the following way:
 
 ```json
 {
@@ -145,7 +145,7 @@ A variable named **"screen_width"** that has a defined data type of integer woul
 }
 ```
 
-The value for the variable would be returned by replacing the **"integer"** data type value with the actual variable value. Values are returned in their native JSON supported data type. If you have requested more than one variable they will be returned in the same "feature_config" property.
+The value for the variable would be returned by replacing the **"integer"** data type value with the actual variable value. Values are returned in their native JSON supported data type. If you have requested more than one variable they will all be returned in the same "feature_config" property.
 
 ```json
 {
