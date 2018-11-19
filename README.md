@@ -60,6 +60,9 @@ All methods are routed through two endpoints.
 ----
 
 ### Activating an experiment
+
+Activates an A/B test for a user, deciding whether they qualify for the experiment and bucketing them into a variation if they do.
+
 **POST** -  http:// {your_server} /rpc
 
 **JSON Body**
