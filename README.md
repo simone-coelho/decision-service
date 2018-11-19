@@ -22,6 +22,20 @@ The following instructions will get the project up and running on your local mac
 1. Start the local Redis server.
 2. Run 'server.js' in the root directory.
 
+----
+## What's new
+
+**11/18/2018**
+
+Added the following methods:
+
+* Get Variation
+* Set Forced Variation
+* Get Forced Variation
+* Get Enabled Features
+
+----
+
 ## Using the decision service
 
 All methods are routed through two endpoints.
@@ -87,12 +101,14 @@ Required:
 Optional:
 * attributes
 * feature_config
+* **feature_test_key** must be included if you want the **"variation_key"** to be included in the response for a feature test.
 
 ```json
 {
     "features": {
         "feature_key":"feature_2",
         "user_id":"123456789",
+	"feature_test_key": "feature_2_test",
         "attributes": {"test_user":"true"},
          "feature_config": {"string_2": "string", "boolean_2": "boolean"}
     }
@@ -101,7 +117,6 @@ Optional:
 
 #### Response
 
- * **"feature_test_key"** is appended to the response if the feature is in a test.
  * **"variation_key"** is appended to the response if the feature is in a test.
  * **"is_enabled"** true or false value is appended to the response.
  * **"feature_config"** has been modified and returns the values assigned to the feature varibles if they exist.
@@ -215,7 +230,7 @@ The describe endpoint, scans through the descriptions of both the methods and th
 {
     "types": {
         "experiment": {
-            "description": "the details of the experiment",
+            "description": "Activates an A/B test for a user, deciding whether they qualify for the experimen",
             "props": {
                 "experiment_key": [
                     "string",
@@ -248,7 +263,7 @@ The describe endpoint, scans through the descriptions of both the methods and th
             }
         },
         "features": {
-            "description": "the details of a feature test",
+            "description": "Determines whether a feature test or rollout is enabled for a given user",
             "props": {
                 "feature_key": [
                     "string",
@@ -276,12 +291,103 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ],
                 "feature_config": [
                     "object",
-                    "returns feature variable values"
+                    "returns feature variable values for feature test or flags (rollouts)"
+                ]
+            }
+        },
+        "get_variation": {
+            "description": "Returns the experiment or feature test variation that a visitor would qualify for",
+            "props": {
+                "experiment_key": [
+                    "string",
+                    "required (experiment or feature test key)"
+                ],
+                "user_id": [
+                    "string",
+                    "required"
+                ],
+                "attributes": [
+                    "object",
+                    "optional"
+                ],
+                "variation_key": [
+                    "string",
+                    "returns the variation key assigned"
+                ],
+                "project_id": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_url": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_key": [
+                    "string",
+                    "optional [currently not implemented]"
+                ]
+            }
+        },
+        "set_variation": {
+            "description": "Forces a user into a variation for a given experiment or feature test",
+            "props": {
+                "experiment_key": [
+                    "string",
+                    "required"
+                ],
+                "user_id": [
+                    "string",
+                    "required"
+                ],
+                "variation_key": [
+                    "string",
+                    "required (variation to force visitor into)"
+                ],
+                "project_id": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_url": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_key": [
+                    "string",
+                    "optional [currently not implemented]"
+                ]
+            }
+        },
+        "get_forced_variation": {
+            "description": "Returns the variation that the user has been forced into",
+            "props": {
+                "experiment_key": [
+                    "string",
+                    "required"
+                ],
+                "user_id": [
+                    "string",
+                    "required"
+                ],
+                "variation_key": [
+                    "string",
+                    "returns the variation key assigned"
+                ],
+                "project_id": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_url": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_key": [
+                    "string",
+                    "optional [currently not implemented]"
                 ]
             }
         },
         "track": {
-            "description": "the details of the track conversion event",
+            "description": "Track conversion events across multiple experiments",
             "props": {
                 "event_key": [
                     "string",
@@ -305,8 +411,37 @@ The describe endpoint, scans through the descriptions of both the methods and th
                 ]
             }
         },
+        "get_enabled_features": {
+            "description": "Returns an array list of all the features that are enabled for the user",
+            "props": {
+                "user_id": [
+                    "string",
+                    "required"
+                ],
+                "attributes": [
+                    "object",
+                    "optional"
+                ],
+                "features_list": [
+                    "array",
+                    "returns list of enabled features"
+                ],
+                "project_id": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_url": [
+                    "string",
+                    "optional [currently not implemented]"
+                ],
+                "datafile_key": [
+                    "string",
+                    "optional [currently not implemented]"
+                ]
+            }
+        },
         "task": {
-            "description": "a task entered by the client to do at a later time",
+            "description": "A task entered by the client to do at a later time",
             "props": {
                 "user_id": [
                     "number",
@@ -327,37 +462,73 @@ The describe endpoint, scans through the descriptions of both the methods and th
         "experiment": {
             "description": "activates the experiment, and returns the assigned variation",
             "params": [
-                "experiment: the experiment object"
+                "expObj: the experiment object"
             ],
             "returns": [
-                "experiment object with variation key assigned"
+                "expObj: object with variation key assigned"
             ]
         },
         "track": {
             "description": "track a conversion event",
             "params": [
-                "track: the track event object"
+                "trackObj: the track event object"
             ],
             "returns": [
-                "track event object with acknowledgement"
+                "trackObj: event object with acknowledgement"
             ]
         },
         "features": {
             "description": "activates a feature flag or feature test and returns the variable values if any",
             "params": [
-                "features: the features object"
+                "featuresObj: the features object"
             ],
             "returns": [
-                "features object with the variable values if requested"
+                "featuresObj: object with the variable values if requested"
             ]
         },
         "task": {
             "description": "[Not functional] creates a new task, and returns the details of the new task",
             "params": [
-                "task: the task object"
+                "taskObj: the task object"
             ],
             "returns": [
-                "task"
+                "taskObj"
+            ]
+        },
+        "get_variation": {
+            "description": "returns the variation for an experiment or feature test",
+            "params": [
+                "expObj: the get_variation object"
+            ],
+            "returns": [
+                "expObj: object with variation key assigned"
+            ]
+        },
+        "set_forced_variation": {
+            "description": "sets an experiment or feature test variation",
+            "params": [
+                "expObj: the set_forced_variation object"
+            ],
+            "returns": [
+                "expObj: object with \"variation_forced\" boolean result of true or false"
+            ]
+        },
+        "get_forced_variation": {
+            "description": "returns the forced variation set by Set Forced Variation, or null if no variation was forced",
+            "params": [
+                "expObj: the get_forced_variation object"
+            ],
+            "returns": [
+                "expObj: object with the \"variation_key\" value if a variation was forced"
+            ]
+        },
+        "get_enabled_features": {
+            "description": "retrieves a list of all the features that are enabled for the user",
+            "params": [
+                "featuresObj: the get_enabled_features object"
+            ],
+            "returns": [
+                "featuresObj: object that contains the property \"features_list\" with a list of keys corresponding to the features that are enabled"
             ]
         }
     }
