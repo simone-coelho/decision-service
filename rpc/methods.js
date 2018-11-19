@@ -238,6 +238,7 @@ let methods = {
       });
     },
   },
+
   /**
    * Forces a user into a specified variation for an experiment or feature test
    *
@@ -278,6 +279,7 @@ let methods = {
       });
     },
   },
+
   /**
    * Returns the forced variation set by Set Forced Variation, or null if no variation was forced.
    *
@@ -316,6 +318,7 @@ let methods = {
       });
     },
   },
+
   /**
    * Retrieves a list of all the features that are enabled for the user.
    *
