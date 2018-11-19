@@ -4,6 +4,16 @@ RPC decision service that is implemented using json over http. The API replicate
 
 This current version does not support multiple projects. The project settings currently live in the configuration file. I am currently working on the next release that will support changing the project datafile through the RPC method call. It will support multiple Optimizely clients each capable of handling a different SDK project datafile.
 
+The decision service currently supports:
+
+* Activate
+* Get Variation
+* Set Forced Variation
+* Get Forced Variation
+* Is Feature Enabled (Feature Tests and Feature Flags / Rollouts)
+* Get Enabled Features
+* Track Conversion Events
+
 ## Getting Started
 
 The following instructions will get the project up and running on your local machine.
