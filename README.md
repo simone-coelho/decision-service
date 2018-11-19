@@ -61,7 +61,7 @@ Required:
 Optional:
 * attributes
 
-```JSONasJs
+```json
 {
     "experiment": {
         "experiment_key":"ds_test",
