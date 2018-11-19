@@ -165,7 +165,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"get_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\"\r\n    }\r\n}\r\n"
+                  "raw": "{\r\n    \"get_forced_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\"\r\n    }\r\n}\r\n"
 				},
 				"url": {
 					"raw": "http://localhost:9090/rpc",

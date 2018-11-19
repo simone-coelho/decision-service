@@ -269,6 +269,8 @@ let methods = {
               expObj.user_id,
               expObj.variation_key);
 
+          delete expObj.attributes;
+
           resolve(expObj);
         }).catch(function() {
           reject('Unable to instantiate the Optimizely client');
@@ -304,6 +306,8 @@ let methods = {
         optimizely.getInstance().then(optly => {
           expObj.variation_key = optly.getForcedVariation(expObj.experiment_key,
               expObj.user_id);
+
+          delete expObj.attributes;
 
           resolve(expObj);
         }).catch(function() {
