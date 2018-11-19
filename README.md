@@ -22,6 +22,11 @@ The following instructions will get the project up and running on your local mac
 1. Start the local Redis server.
 2. Run 'server.js' in the root directory.
 
+----
+## What's new
+
+----
+
 ## Using the decision service
 
 All methods are routed through two endpoints.
