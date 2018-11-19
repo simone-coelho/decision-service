@@ -222,9 +222,15 @@ Required:
 
 ----
 
-### Activating a feature test or feature flags
+### Activating a feature test or feature flags / rollouts
+
+Determines whether a feature test or rollout is enabled for a given user.
+
+The purpose of this method is to separate the process of developing and deploying features from the decision to turn on a feature. Build your feature and deploy it to your application behind this flag, then turn the feature on or off for specific users by running tests and rollouts.
 
 Feature tests and feature flags or rollouts are called by using the same method and replicates the SDK functionality. If a feature test and a feature rollout are running on a feature, the test is evaluated first.
+
+This methos is the equivalent of **IsFeatureEnabled**
 
 **POST** -  http:// {your_server} /rpc
 
