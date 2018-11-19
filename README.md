@@ -330,7 +330,7 @@ Optional:
 ```json
 {
     "get_enabled_features": {
-        "user_id": "sac123456789",
+        "user_id": "123456789",
         "attributes": {
             "test_user": "true"
         },
