@@ -85,7 +85,133 @@ Optional:
     }
 }
 ```
+
 ----
+
+### Get Variation
+
+Activates an A/B test for a user and returns information about an experiment variation.
+
+This method performs the same logic as Activate, in that it activates an A/B test for a user, deciding whether they qualify for the experiment and bucketing them into a variation if they do. Unlike Activate, this method does not send an impression network request.
+
+**POST** -  http:// {your_server} /rpc
+
+**JSON Body**
+
+Required:
+* experiment_key
+* user_id
+
+Optional:
+* attributes
+
+```json
+{
+    "get_variation": {
+        "experiment_key":"ds_test",
+        "user_id":"123456789",
+        "attributes": {"test_user":"true"}
+    }
+}
+```
+
+#### Response
+
+ * **"variation_key"** is appended and returns the assigned variation.
+
+```json
+{
+    "get_variation": {
+        "experiment_key": "ds_test",
+        "user_id": "123456789",
+        "attributes": {"test_user":"true"},
+        "variation_key": "assigned_variation"
+    }
+}
+```
+----
+
+### Set Forced Variation
+
+Forces a user into a variation for a given experiment for the lifetime of the Optimizely client.
+
+The purpose of this method is to forces a user into a specific variation or personalized experience for a given experiment.
+
+**POST** -  http:// {your_server} /rpc
+
+**JSON Body**
+
+Required:
+* experiment_key
+* user_id
+* variation_key
+
+```json
+{
+    "set_forced_variation": {
+        "experiment_key":"ds_test",
+        "user_id":"123456789",
+        "variation_key":"variation_1"
+    }
+}
+```
+
+#### Response
+
+ * **"variation_forced"** A boolean value that indicates if the set completed successfully.
+
+```json
+{
+    "set_forced_variation": {
+        "experiment_key": "ds_test",
+        "user_id": "123456789",
+        "variation_key": "variation_1",
+        "variation_forced": true
+    }
+}
+```
+
+----
+
+### Get Forced Variation
+
+Returns the forced variation set by Set Forced Variation, or null if no variation was forced.
+
+A user can be forced into a variation for a given experiment for the lifetime of the Optimizely client. This method gets the variation that the user has been forced into.
+
+**POST** -  http:// {your_server} /rpc
+
+**JSON Body**
+
+Required:
+* experiment_key
+* user_id
+
+```json
+{
+    "get_forced_variation": {
+        "experiment_key":"ds_test",
+        "user_id":"123456789"
+    }
+}
+```
+
+#### Response
+
+ * **"variation_key"** is appended and returns the assigned variation.
+
+```json
+{
+    "get_forced_variation": {
+        "experiment_key": "ds_test",
+        "user_id": "sac123456789",
+        "variation_key": "assigned_variation"
+    }
+}
+```
+
+----
+
 ### Activating a feature test or feature flags
 
 Feature tests and feature flags or rollouts are called by using the same method and replicates the SDK functionality. If a feature test and a feature rollout are running on a feature, the test is evaluated first.
@@ -171,8 +297,56 @@ The value for the variable would be returned by replacing the **"integer"** data
 ```
 ----
 
+### Get Enabled Features
+
+Retrieves a list of features that are enabled for the user.
+
+The purpose of this method is to get a list of features that are enabled for the user. Invoking this method is equivalent to running Is Feature Enabled for each feature in the datafile sequentially.
+
+**POST** -  http:// {your_server} /rpc
+
+**JSON Body**
+
+Required:
+* user_id
+
+Optional:
+* attributes
+
+```json
+{
+    "get_enabled_features": {
+        "user_id":"123456789",
+        "attributes": {"test_user":"true"}
+    }
+}
+
+```
+
+#### Response
+
+ * **"features_list"** is appended and returns a list of the feature keys that are enabled for the user.
+
+```json
+{
+    "get_enabled_features": {
+        "user_id": "sac123456789",
+        "attributes": {
+            "test_user": "true"
+        },
+        "features_list": [
+            "feature_1",
+            "feature_2"
+        ]
+    }
+}
+```
+----
 
 ### Tracking conversion events
+
+You can track conversion events from your code with the Track function. The Track function can be used to track events across multiple experiments. It will be counted for each experiment only if Activate or Is Feature Enabled has previously been called for the current user.
+
 **POST** -  http:// {your_server} /rpc
 
 **JSON Body**
@@ -216,7 +390,6 @@ Optional:
 }
 ```
 ----
-
 
 ### Describe RPC methods
 **GET** -  http:// {your_server} /describe
