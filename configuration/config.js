@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       config.js
- * Last Modified:   11/15/18 2:02 AM
+ * Last Modified:   11/17/18 2:35 PM
  *
  */
 
@@ -12,7 +12,14 @@ const utils = require('../utilities/utils');
 let config = {
   // SDK
   sdk: {
-    //Using Project ID
+    //Any global attributes that should be included in all API functions
+    GLOBAL_ATTRIBUTES: {},
+
+    // Specifies the experiment activation interval in hours.
+    // A value of "0" means that activation will occur on every call.
+    activation_interval: 0,
+
+    // Using Project ID
     PROJECT_ID: process.env.PROJECT_ID || '12101591721',
     SDK_URL_ID: process.env.SDK_URL_ID ||
         'https://cdn.optimizely.com/json/12101591721.json',
@@ -28,17 +35,24 @@ let config = {
     DATAFILE_DIR: process.env.DATAFILE_DIR || 'datafiles/',
     DATAFILE_NAME: process.env.DATAFILE_NAME || 'datafile.json',
     DATAFILE_PATH: process.env.DATAFILE_PATH || '',
-    DATAFILE_URL: '',
-    DATAFILE_URL_ID: '',
+    get DATAFILE_URL() {
+      return utils.placeHolder(this._SDK_URL,
+          {SDK_KEY: this.SDK_KEY});
+    },
+    get DATAFILE_URL_ID() {
+      return utils.placeHolder(this._SDK_URL_ID,
+          {SDK_KEY: this.sdk.SDK_KEY});
+    },
 
     // Active datafile
     DATAFILE: null,
     DATAFILE_REVISION: 0,
 
-    // Update settings
-
-    // Update interval currently defaults to 15 minutes.
+    // Datafile update interval currently defaults to 15 minutes. Polling fir updated
+    // datafiles will occur at this "cron" interval.
     UPDATE_INTERVAL: '*/15 * * * *',
+
+    // Webhook settings
     WEBHOOK_URL: process.env.WEBHOOK_URL || '',
     WEBHOOK_TOKEN: process.env.WEBHOOK_TOKEN || '',
   },
@@ -54,12 +68,12 @@ let config = {
   },
 };
 
-// Default datafile URL paths by Key and Project ID
-config.sdk.DATAFILE_URL = utils.placeHolder(config.sdk._SDK_URL,
-    {SDK_KEY: config.sdk.SDK_KEY});
-
-config.sdk.DATAFILE_URL_ID = utils.placeHolder(config.sdk._SDK_URL_ID,
-    {SDK_KEY: config.sdk.SDK_KEY});
+//// Default datafile URL paths by Key and Project ID
+//config.sdk.DATAFILE_URL = utils.placeHolder(config.sdk._SDK_URL,
+//    {SDK_KEY: config.sdk.SDK_KEY});
+//
+//config.sdk.DATAFILE_URL_ID = utils.placeHolder(config.sdk._SDK_URL_ID,
+//    {SDK_KEY: config.sdk.SDK_KEY});
 
 // Directory to save datafile
 config.sdk.DATAFILE_PATH = config.sdk.DATAFILE_DIR + config.sdk.DATAFILE_NAME;

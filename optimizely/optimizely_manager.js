@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       optimizely_manager.js
- * Last Modified:   11/15/18 2:02 AM
+ * Last Modified:   11/16/18 9:09 PM
  *
  */
 
@@ -139,7 +139,7 @@ function _getInstance(datafile) {
     optlyInstance = optimizely.createInstance({
       datafile,
       userProfileService,
-      // This should be set to/ false if we modify the activeDatafile in any way.
+      // This should be set to false if we modify the activeDatafile in any way.
       skipJSONValidation: true,
       logger: defaultLogger.createLogger({
         logLevel: LOG_LEVEL.INFO,

@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       json_schemas.js
- * Last Modified:   11/15/18 2:23 AM
+ * Last Modified:   11/18/18 2:36 AM
  *
  */
 
@@ -12,6 +12,28 @@
  * Used to validate the RPC method objects passed in as parameters.
  */
 const schemas = {
+  shared: {
+    'attributes': {
+      'type': 'object',
+      'default': {},
+      'patternProperties': {
+        '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
+          'type': ['integer', 'string', 'number', 'boolean', 'null'],
+        },
+      },
+    },
+    'feature_config': {
+      'type': 'object',
+      'default': {},
+      'patternProperties': {
+        '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
+          'type': 'string',
+          'enum': ['string', 'boolean', 'double', 'integer'],
+        },
+      },
+    },
+  },
+
   experiments: {
     'type': 'object',
     'properties': {
@@ -21,14 +43,8 @@ const schemas = {
       'user_id': {
         'type': 'string',
       },
-      'attributes': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': ['integer', 'string', 'number', 'boolean', 'null'],
-          },
-        },
+      get attributes() {
+        return schemas.shared.attributes;
       },
       'variation_key': {
         'type': 'string',
@@ -65,14 +81,8 @@ const schemas = {
       'user_id': {
         'type': 'string',
       },
-      'attributes': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': ['integer', 'string', 'number', 'boolean', 'null'],
-          },
-        },
+      get attributes() {
+        return schemas.shared.attributes;
       },
       'is_enabled': {
         'type': 'boolean',
@@ -82,15 +92,8 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
-      'feature_config': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': 'string',
-            'enum': ['string', 'boolean', 'double', 'integer'],
-          },
-        },
+      get feature_config() {
+        return schemas.shared.feature_config;
       },
     },
     'required': [
@@ -111,14 +114,8 @@ const schemas = {
       'user_id': {
         'type': 'string',
       },
-      'attributes': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': ['integer', 'string', 'number', 'boolean', 'null'],
-          },
-        },
+      get attributes() {
+        return schemas.shared.attributes;
       },
       'feature_test_key': {
         'type': 'string',
@@ -132,15 +129,8 @@ const schemas = {
         'type': 'boolean',
         'default': false,
       },
-      'feature_config': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': 'string',
-            'enum': ['string', 'boolean', 'double', 'integer'],
-          },
-        },
+      get feature_config() {
+        return schemas.shared.feature_config;
       },
     },
     'required': [
@@ -161,14 +151,8 @@ const schemas = {
       'user_id': {
         'type': 'string',
       },
-      'attributes': {
-        'type': 'object',
-        'default': {},
-        'patternProperties': {
-          '^[a-zA-Z0-9!@#$&()\\-`.+,/"]*$_={}<>?:;|[]': {
-            'type': ['integer', 'string', 'number', 'boolean', 'null'],
-          },
-        },
+      get attributes() {
+        return schemas.shared.attributes;
       },
       'tags': {
         'type': 'object',
@@ -186,6 +170,97 @@ const schemas = {
     },
     'required': [
       'event_key',
+      'user_id',
+    ],
+  },
+
+  set_variation: {
+    'type': 'object',
+    'properties': {
+      'experiment_key': {
+        'type': 'string',
+      },
+      'user_id': {
+        'type': 'string',
+      },
+      'variation_key': {
+        'type': 'string',
+        'default': '',
+      },
+      'project_id': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_url': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_key': {
+        'type': 'string',
+        'default': '',
+      },
+    },
+    'required': [
+      'experiment_key',
+      'user_id',
+      'variation_key',
+    ],
+  },
+
+  get_variation: {
+    'type': 'object',
+    'properties': {
+      'experiment_key': {
+        'type': 'string',
+      },
+      'user_id': {
+        'type': 'string',
+      },
+      get attributes() {
+        return schemas.shared.attributes;
+      },
+      'project_id': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_url': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_key': {
+        'type': 'string',
+        'default': '',
+      },
+    },
+    'required': [
+      'experiment_key',
+      'user_id',
+    ],
+  },
+
+  enabled_features: {
+    'type': 'object',
+    'properties': {
+      'user_id': {
+        'type': 'string',
+      },
+      get attributes() {
+        return schemas.shared.attributes;
+      },
+      'project_id': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_url': {
+        'type': 'string',
+        'default': '',
+      },
+      'datafile_key': {
+        'type': 'string',
+        'default': '',
+      },
+    },
+    'required': [
       'user_id',
     ],
   },

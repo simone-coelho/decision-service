@@ -7,6 +7,9 @@
 	"item": [
 		{
 			"name": "RPC - Describe",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -42,7 +45,127 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"experiment\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"variation_key\":\"\"\r\n    }\r\n}\r\n"
+                  "raw": "{\r\n    \"experiment\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"variation_key\":\"\"\r\n    }\r\n}"
+                },
+              "url": {
+                "raw": "http://localhost:9090/rpc",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "9090",
+                "path": [
+                  "rpc"
+                ]
+              }
+            },
+          "response": []
+        },
+      {
+        "name": "RPC - Get Variation",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "type": "text",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"get_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"variation_key\":\"\"\r\n    }\r\n}\r\n"
+          },
+          "url": {
+            "raw": "http://localhost:9090/rpc",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "9090",
+            "path": [
+              "rpc"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "RPC - Set Forced Variation",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "type": "text",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"set_forced_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"variation_key\":\"variation_1\"\r\n    }\r\n}\r\n"
+          },
+          "url": {
+            "raw": "http://localhost:9090/rpc",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "9090",
+            "path": [
+              "rpc"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "RPC - Clear Set Forced Variation",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "type": "text",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"set_forced_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"variation_key\":null\r\n    }\r\n}\r\n"
+          },
+          "url": {
+            "raw": "http://localhost:9090/rpc",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "9090",
+            "path": [
+              "rpc"
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "RPC - Get Forced Variation",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "type": "text",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"get_variation\": {\r\n        \"experiment_key\":\"ds_test\",\r\n        \"user_id\":\"sac123456789\"\r\n    }\r\n}\r\n"
 				},
 				"url": {
 					"raw": "http://localhost:9090/rpc",
@@ -102,7 +225,37 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"features\": {\r\n        \"feature_key\":\"feature_2\",\r\n        \"feature_test_key\":\"feature_2_test\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"is_enabled\": false,\r\n        \"variation_key\":\"\",\r\n        \"feature_config\": {\"string_2\": \"string\", \"boolean_2\": \"boolean\"}\r\n    }\r\n}\r\n"
+                  "raw": "{\r\n    \"features\": {\r\n        \"feature_key\":\"feature_2\",\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"},\r\n        \"feature_test_key\":\"feature_2_test\",\r\n        \"variation_key\":\"\",\r\n        \"is_enabled\": false,\r\n        \"feature_config\": {\"string_2\": \"string\", \"boolean_2\": \"boolean\"}\r\n    }\r\n}\r\n"
+                },
+              "url": {
+                "raw": "http://localhost:9090/rpc",
+                "protocol": "http",
+                "host": [
+                  "localhost"
+                ],
+                "port": "9090",
+                "path": [
+                  "rpc"
+                ]
+              }
+            },
+          "response": []
+        },
+      {
+        "name": "RPC - Get Enabled Features",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "name": "Content-Type",
+              "type": "text",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"get_enabled_features\": {\r\n        \"user_id\":\"sac123456789\",\r\n        \"attributes\": {\"test_user\":\"true\"}\r\n    }\r\n}\r\n"
 				},
 				"url": {
 					"raw": "http://localhost:9090/rpc",

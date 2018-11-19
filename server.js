@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       server.js
- * Last Modified:   11/15/18 2:02 AM
+ * Last Modified:   11/17/18 2:12 PM
  *
  */
 
@@ -39,6 +39,7 @@ let routes = {
    *   Original JSON object with corresponding result(s) appended.
    */
   '/rpc': function(body) {
+
     return new Promise((resolve, reject) => {
       let _json = JSON.parse(body); // might throw error
       let keys = Object.keys(_json);
@@ -46,6 +47,8 @@ let routes = {
 
       if (!body) {
         response.statusCode = 400;
+        //noinspection
+        // NodeModulesDependencies,NodeModulesDependencies,ES6ModulesDependencies,JSUnresolvedFunction
         response.end(JSON.stringify(
             {Message: `RPC request was expecting some data...!`}));
         return;
@@ -86,7 +89,7 @@ let routes = {
    * and the data types, and returns that information in the response.
    *
    * @returns {Promise<object>}
-   *   JSON Object with the descriptions for the all the methods supported.
+   *   JSON Object with the descriptions for all the methods supported.
    */
   '/describe': function() {
     // load the type descriptions

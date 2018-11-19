@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       json_validator.js
- * Last Modified:   11/14/18 8:23 PM
+ * Last Modified:   11/18/18 2:39 AM
  *
  */
 
@@ -27,6 +27,9 @@ let validators = {
   features: ajv.compile(schemas.features),
   feature_test: ajv.compile(schemas.feature_test),
   track: ajv.compile(schemas.track),
+  enabled_features: ajv.compile(schemas.enabled_features),
+  get_variation: ajv.compile(schemas.get_variation),
+  set_variation: ajv.compile(schemas.set_variation),
   ajv: ajv,
 };
 

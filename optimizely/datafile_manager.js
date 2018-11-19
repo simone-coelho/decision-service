@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       datafile_manager.js
- * Last Modified:   11/15/18 2:02 AM
+ * Last Modified:   11/16/18 1:46 PM
  *
  */
 
@@ -18,7 +18,7 @@ const schedule = require('node-schedule');
 let datafileEvent = new EventEmitter();
 
 /**
- * Scheduler responsible for datafile download at defined interval.
+ * Scheduler responsible for datafile download at predefined intervals.
  */
 schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
   const previousRevision = sdk.DATAFILE_REVISION;

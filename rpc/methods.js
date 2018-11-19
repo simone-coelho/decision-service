@@ -19,12 +19,12 @@ let methods = {
    *   Experiment JSON object.
    *   Refer to types.js for a description of the JSON schema definitions.
    * @returns {Promise<object>}
-   *   Contains expObj with assigned variation.
+   *   Contains expObj with the assigned variation.
    */
   experiment: {
     description: `activates the experiment, and returns the assigned variation`,
-    params: ['experiment: the experiment object'],
-    returns: ['experiment object with variation key assigned'],
+    params: ['expObj: the experiment object'],
+    returns: ['expObj: object with variation key assigned'],
     exec(expObj) {
       return new Promise((resolve, reject) => {
         if (typeof (expObj) !== 'object') {
@@ -58,8 +58,8 @@ let methods = {
    */
   track: {
     description: `track a conversion event`,
-    params: ['track: the track event object'],
-    returns: ['track event object with acknowledgement'],
+    params: ['trackObj: the track event object'],
+    returns: ['trackObj: event object with acknowledgement'],
     exec(trackObj) {
       return new Promise((resolve, reject) => {
         if (typeof (trackObj) !== 'object') {
@@ -97,8 +97,8 @@ let methods = {
    */
   features: {
     description: `activates a feature flag or feature test and returns the variable values if any`,
-    params: ['features: the features object'],
-    returns: ['features object with the variable values if requested'],
+    params: ['featuresObj: the features object'],
+    returns: ['featuresObj: object with the variable values if requested'],
     exec(featuresObj) {
       return new Promise((resolve, reject) => {
         if (typeof (featuresObj) !== 'object') {
@@ -180,8 +180,8 @@ let methods = {
    */
   task: {
     description: `[Not functional] creates a new task, and returns the details of the new task`,
-    params: ['task: the task object'],
-    returns: ['task'],
+    params: ['taskObj: the task object'],
+    returns: ['taskObj'],
     exec(taskObj) {
       return new Promise((resolve, reject) => {
 
@@ -197,8 +197,157 @@ let methods = {
         };
 
         resolve(db.tasks.save(task));
-      }).catch(function() {
-        reject('Unable to initialize the specified task');
+      });
+    },
+  },
+
+  /**
+   * Returns the variation for an experiment or feature test
+   *
+   * @param expObj
+   *   Experiment or feature test JSON object.
+   *   Refer to types.js for a description of the JSON schema definitions.
+   * @returns {Promise<object>}
+   *   Contains expObj with the assigned variation.
+   */
+  get_variation: {
+    description: `returns the variation for an experiment or feature test`,
+    params: ['expObj: the get_variation object'],
+    returns: ['expObj: object with variation key assigned'],
+    exec(expObj) {
+      return new Promise((resolve, reject) => {
+        if (typeof (expObj) !== 'object') {
+          throw new Error('Undefined or invalid JSON object');
+        }
+
+        // Validate JSON from schema
+        let validJSON = validate.get_variation(expObj);
+        if (!validJSON) {
+          throw new Error(validate.ajv.errorsText(validate.get_variation.errors));
+        }
+
+        optimizely.getInstance().then(optly => {
+          expObj.variation_key = optly.getVariation(expObj.experiment_key,
+              expObj.user_id,
+              expObj.attributes);
+
+          resolve(expObj);
+        }).catch(function() {
+          reject('Unable to instantiate the Optimizely client');
+        });
+      });
+    },
+  },
+  /**
+   * Forces a user into a specified variation for an experiment or feature test
+   *
+   * @param expObj
+   *   Experiment or feature test JSON object.
+   *   Refer to types.js for a description of the JSON schema definitions.
+   * @returns {Promise<object>}
+   *   Contains expObj with the property "variation_forced" set to true if
+   *   the operation was successful or false if it was not.
+   */
+  set_forced_variation: {
+    description: `sets an experiment or feature test variation`,
+    params: ['expObj: the set_forced_variation object'],
+    returns: ['expObj: object with "variation_forced" boolean result of true or false'],
+    exec(expObj) {
+      return new Promise((resolve, reject) => {
+        if (typeof (expObj) !== 'object') {
+          throw new Error('Undefined or invalid JSON object');
+        }
+
+        // Validate JSON from schema
+        let validJSON = validate.get_variation(expObj);
+        if (!validJSON) {
+          throw new Error(validate.ajv.errorsText(validate.set_variation.errors));
+        }
+
+        optimizely.getInstance().then(optly => {
+          expObj.variation_forced = optly.setForcedVariation(expObj.experiment_key,
+              expObj.user_id,
+              expObj.variation_key);
+
+          resolve(expObj);
+        }).catch(function() {
+          reject('Unable to instantiate the Optimizely client');
+        });
+      });
+    },
+  },
+  /**
+   * Returns the forced variation set by Set Forced Variation, or null if no variation was forced.
+   *
+   * @param expObj
+   *   Experiment or feature test JSON object.
+   *   Refer to types.js for a description of the JSON schema definitions.
+   * @returns {Promise<object>}
+   *   Contains expObj with the property "variation_key" value if a variation was forced
+   */
+  get_forced_variation: {
+    description: `returns the forced variation set by Set Forced Variation, or null if no variation was forced`,
+    params: ['expObj: the get_forced_variation object'],
+    returns: ['expObj: object with the "variation_key" value if a variation was forced'],
+    exec(expObj) {
+      return new Promise((resolve, reject) => {
+        if (typeof (expObj) !== 'object') {
+          throw new Error('Undefined or invalid JSON object');
+        }
+
+        // Validate JSON from schema
+        let validJSON = validate.get_variation(expObj);
+        if (!validJSON) {
+          throw new Error(validate.ajv.errorsText(validate.get_variation.errors));
+        }
+
+        optimizely.getInstance().then(optly => {
+          expObj.variation_forced = optly.getForcedVariation(expObj.experiment_key,
+              expObj.user_id);
+
+          resolve(expObj);
+        }).catch(function() {
+          reject('Unable to instantiate the Optimizely client');
+        });
+      });
+    },
+  },
+  /**
+   * Retrieves a list of all the features that are enabled for the user.
+   *
+   * @param expObj
+   *   Feature test JSON object.
+   *   Refer to types.js for a description of the JSON schema definitions.
+   * @returns {Promise<object>}
+   *   Contains featuresObj with the property "features_list" that contains a list of
+   *   keys corresponding to the features that are enabled for the user.
+   */
+  get_enabled_features: {
+    description: `retrieves a list of all the features that are enabled for the user`,
+    params: ['featuresObj: the get_enabled_features object'],
+    returns: [
+      'featuresObj: object that contains the property "features_list" with a list of keys ' +
+      'corresponding to the features that are enabled'],
+    exec(featuresObj) {
+      return new Promise((resolve, reject) => {
+        if (typeof (featuresObj) !== 'object') {
+          throw new Error('Undefined or invalid JSON object');
+        }
+
+        // Validate JSON from schema
+        let validJSON = validate.enabled_features(featuresObj);
+        if (!validJSON) {
+          throw new Error(validate.ajv.errorsText(validate.enabled_features.errors));
+        }
+
+        optimizely.getInstance().then(optly => {
+          featuresObj.features_list = optly.getEnabledFeatures(featuresObj.user_id,
+              featuresObj.attributes);
+
+          resolve(featuresObj);
+        }).catch(function() {
+          reject('Unable to instantiate the Optimizely client');
+        });
       });
     },
   },
