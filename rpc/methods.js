@@ -302,7 +302,7 @@ let methods = {
         }
 
         optimizely.getInstance().then(optly => {
-          expObj.variation_forced = optly.getForcedVariation(expObj.experiment_key,
+          expObj.variation_key = optly.getForcedVariation(expObj.experiment_key,
               expObj.user_id);
 
           resolve(expObj);
