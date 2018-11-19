@@ -25,6 +25,15 @@ The following instructions will get the project up and running on your local mac
 ----
 ## What's new
 
+**11/18/2018**
+
+Added the following methods:
+
+* Get Variation
+* Set Forced Variation
+* Get Forced Variation
+* Get Enabled Features
+
 ----
 
 ## Using the decision service
@@ -52,7 +61,7 @@ Required:
 Optional:
 * attributes
 
-```json
+```JSONasJs
 {
     "experiment": {
         "experiment_key":"ds_test",
