@@ -48,7 +48,7 @@ let types = {
       datafile_key: ['string', 'optional [currently not implemented]'],
     },
   },
-  set_variation: {
+  set_forced_variation: {
     description: 'Forces a user into a variation for a given experiment or feature test',
     props: {
       experiment_key: ['string', 'required'],
