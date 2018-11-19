@@ -4,6 +4,16 @@ RPC decision service that is implemented using json over http. The API replicate
 
 This current version does not support multiple projects. The project settings currently live in the configuration file. I am currently working on the next release that will support changing the project datafile through the RPC method call. It will support multiple Optimizely clients each capable of handling a different SDK project datafile.
 
+The decision service currently supports:
+
+* Activate
+* Get Variation
+* Set Forced Variation
+* Get Forced Variation
+* Is Feature Enabled (Feature Tests and Feature Flags / Rollouts)
+* Get Enabled Features
+* Track Conversion Events
+
 ## Getting Started
 
 The following instructions will get the project up and running on your local machine.
@@ -50,6 +60,9 @@ All methods are routed through two endpoints.
 ----
 
 ### Activating an experiment
+
+Activates an A/B test for a user, deciding whether they qualify for the experiment and bucketing them into a variation if they do.
+
 **POST** -  http:// {your_server} /rpc
 
 **JSON Body**
@@ -212,9 +225,15 @@ Required:
 
 ----
 
-### Activating a feature test or feature flags
+### Activating a feature test or feature flags / rollouts
+
+Determines whether a feature test or rollout is enabled for a given user.
+
+The purpose of this method is to separate the process of developing and deploying features from the decision to turn on a feature. Build your feature and deploy it to your application behind this flag, then turn the feature on or off for specific users by running tests and rollouts.
 
 Feature tests and feature flags or rollouts are called by using the same method and replicates the SDK functionality. If a feature test and a feature rollout are running on a feature, the test is evaluated first.
+
+This methos is the equivalent of **IsFeatureEnabled**
 
 **POST** -  http:// {your_server} /rpc
 
@@ -330,7 +349,7 @@ Optional:
 ```json
 {
     "get_enabled_features": {
-        "user_id": "sac123456789",
+        "user_id": "123456789",
         "attributes": {
             "test_user": "true"
         },
