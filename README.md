@@ -55,7 +55,7 @@ All methods are routed through two endpoints.
 * GET - http:// {your_server} /describe
 	* Example: http://localhost:9090/describe
 
-**Note:** You can find an exported Postman collections file, "DS RPC.postman_collection.json", in the "postman" directory in this project that contains 5 requests that you can use for testing. These requests will work with the default server configuration that uses an already configured full stack test that is currently running in Optimizely.
+**Note:** You can find an exported Postman collections file, "DS RPC.postman_collection.json", in the "postman" directory in this project that contains 10 different requests that you can use for testing all of the methods. These requests will work with the default server configuration that uses an already configured full stack test that is currently running in Optimizely.
 
 ----
 
