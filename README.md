@@ -403,7 +403,7 @@ Optional:
         "attributes": {
             "test_user": "true"
         },
-        "tags": {"revenue": 100000},
+        "tags": {"revenue": 10000},
         "acknowledgement": "success"
     }
 }
