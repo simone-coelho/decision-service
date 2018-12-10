@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       json_schemas.js
- * Last Modified:   11/18/18 2:36 AM
+ * Last Modified:   12/8/18 12:47 AM
  *
  */
 
@@ -50,22 +50,14 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
-      'project_id': {
-        'type': 'string',
-        'default': '',
-      },
-      'datafile_url': {
-        'type': 'string',
-        'default': '',
-      },
       'datafile_key': {
         'type': 'string',
-        'default': '',
       },
     },
     'required': [
       'experiment_key',
       'user_id',
+      'datafile_key',
     ],
   },
 
@@ -92,6 +84,9 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
+      'datafile_key': {
+        'type': 'string',
+      },
       get feature_config() {
         return schemas.shared.feature_config;
       },
@@ -99,6 +94,7 @@ const schemas = {
     'required': [
       'feature_key',
       'user_id',
+      'datafile_key',
     ],
   },
 
@@ -125,6 +121,9 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
+      'datafile_key': {
+        'type': 'string',
+      },
       'is_enabled': {
         'type': 'boolean',
         'default': false,
@@ -136,6 +135,7 @@ const schemas = {
     'required': [
       'feature_key',
       'user_id',
+      'datafile_key',
     ],
   },
 
@@ -163,6 +163,9 @@ const schemas = {
           },
         },
       },
+      'datafile_key': {
+        'type': 'string',
+      },
       'acknowledgement': {
         'type': 'string',
         'default': '',
@@ -171,6 +174,7 @@ const schemas = {
     'required': [
       'event_key',
       'user_id',
+      'datafile_key',
     ],
   },
 
@@ -187,23 +191,15 @@ const schemas = {
         'type': 'string',
         'default': '',
       },
-      'project_id': {
-        'type': 'string',
-        'default': '',
-      },
-      'datafile_url': {
-        'type': 'string',
-        'default': '',
-      },
       'datafile_key': {
         'type': 'string',
-        'default': '',
       },
     },
     'required': [
       'experiment_key',
       'user_id',
       'variation_key',
+      'datafile_key',
     ],
   },
 
@@ -219,22 +215,14 @@ const schemas = {
       get attributes() {
         return schemas.shared.attributes;
       },
-      'project_id': {
-        'type': 'string',
-        'default': '',
-      },
-      'datafile_url': {
-        'type': 'string',
-        'default': '',
-      },
       'datafile_key': {
         'type': 'string',
-        'default': '',
       },
     },
     'required': [
       'experiment_key',
       'user_id',
+      'datafile_key',
     ],
   },
 
@@ -247,21 +235,13 @@ const schemas = {
       get attributes() {
         return schemas.shared.attributes;
       },
-      'project_id': {
-        'type': 'string',
-        'default': '',
-      },
-      'datafile_url': {
-        'type': 'string',
-        'default': '',
-      },
       'datafile_key': {
         'type': 'string',
-        'default': '',
       },
     },
     'required': [
       'user_id',
+      'datafile_key',
     ],
   },
 

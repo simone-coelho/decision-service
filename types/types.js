@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       types.js
- * Last Modified:   11/18/18 3:03 AM
+ * Last Modified:   12/7/18 11:17 PM
  *
  */
 
@@ -30,6 +30,9 @@ let types = {
       attributes: ['object', 'optional'],
       feature_test_key: ['string', 'optional - returns feature test key if feature is in a test'],
       variation_key: ['string', 'returns variation key for the feature test'],
+      project_id: ['string', 'optional [currently not implemented]'],
+      datafile_url: ['string', 'optional [currently not implemented]'],
+      datafile_key: ['string', 'optional [currently not implemented]'],
       is_enabled: ['boolean', 'returns "true" if feature is enabled'],
       feature_config: [
         'object',
@@ -77,6 +80,9 @@ let types = {
       user_id: ['string', 'required'],
       attributes: ['object', 'optional'],
       tags: ['array of objects', 'optional'],
+      project_id: ['string', 'optional [currently not implemented]'],
+      datafile_url: ['string', 'optional [currently not implemented]'],
+      datafile_key: ['string', 'optional [currently not implemented]'],
       acknowledgement: ['string', 'returns "success" or error message'],
     },
   },

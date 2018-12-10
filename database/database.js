@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       database.js
- * Last Modified:   11/15/18 4:05 AM
+ * Last Modified:   11/29/18 10:46 AM
  *
  */
 
@@ -14,70 +14,72 @@ const db = config.db;
 
 // Redis
 const asyncRedis = require('async-redis');
-const redisClient = asyncRedis.createClient(db.REDIS_PORT, db.REDIS_PATH);
 
+if ((config.db.REDIS_PATH) && (config.db.REDIS_PATH !== '')) {
+  const redisClient = asyncRedis.createClient(db.REDIS_PORT, db.REDIS_PATH);
 
-module.exports = {
-  /**
-   *  Database client. It is currently using Redis but could be
-   *  configured to use any database or data store by changing the
-   *  load and save functions.
-   */
-  dbClient: redisClient,
-  /**
-   * Saves the datafile to the data store.
-   *
-   * @param projectId
-   * @param datafile
-   * @returns {Promise<void>}
-   */
-  saveDatafileToDB: async function(projectId, datafile) {
-    try {
-      await
-          redisClient.set(projectId, JSON.stringify(datafile));
-    } catch (err) {
-      console.error('Unable to save datafile to Redis - ' + err);
-      return null;
-    }
-  },
-
-  /**
-   * Loads the datafile from the data store.
-   *
-   * @param projectId
-   * @returns {Promise<*>}
-   */
-  loadDatafileFromDB: async function(projectId) {
-    try {
-      let result = await
-          redisClient.get(projectId);
-      let datafile = null;
-
-      if (result) {
-        datafile = JSON.parse(result);
+  module.exports = {
+    /**
+     *  Database client. It is currently using Redis but could be
+     *  configured to use any database or data store by changing the
+     *  load and save functions.
+     */
+    dbClient: redisClient,
+    /**
+     * Saves the datafile to the data store.
+     *
+     * @param projectId
+     * @param datafile
+     * @returns {Promise<void>}
+     */
+    saveDatafileToDB: async function(projectId, datafile) {
+      try {
+        await
+            redisClient.set(projectId, JSON.stringify(datafile));
+      } catch (err) {
+        console.error('Unable to save datafile to Redis - ' + err);
+        return null;
       }
+    },
 
-      return datafile;
-    } catch (err) {
-      console.error('Unable to load datafile from Redis - ' + err);
-      return null;
-    }
-  },
-};
+    /**
+     * Loads the datafile from the data store.
+     *
+     * @param projectId
+     * @returns {Promise<*>}
+     */
+    loadDatafileFromDB: async function(projectId) {
+      try {
+        let result = await
+            redisClient.get(projectId);
+        let datafile = null;
 
-/**
- * Redis - Listen for errors.
- */
-redisClient.on('error',
-    function(err) {
-      console.error('Error: ' + err);
-    });
+        if (result) {
+          datafile = JSON.parse(result);
+        }
 
-/**
- * Redis - Listen for ready state.
- */
-redisClient.on('ready',
-    function(err) {
-      console.log('Redis has started and is listening on ' + db.REDIS_PATH + ':' + db.REDIS_PORT);
-    });
+        return datafile;
+      } catch (err) {
+        console.error('Unable to load datafile from Redis - ' + err);
+        return null;
+      }
+    },
+  };
 
+  /**
+   * Redis - Listen for errors.
+   */
+  redisClient.on('error',
+      function(err) {
+        console.error('Error: ' + err);
+      });
+
+  /**
+   * Redis - Listen for ready state.
+   */
+  redisClient.on('ready',
+      function(err) {
+        console.log('Redis has started and is listening on ' + db.REDIS_PATH + ':' + db.REDIS_PORT);
+      });
+
+}

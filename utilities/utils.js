@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       utils.js
- * Last Modified:   11/17/18 4:28 AM
+ * Last Modified:   12/7/18 11:33 PM
  *
  */
 
@@ -25,9 +25,10 @@ module.exports = {
     return pattern.test(str);
   },
 
-  extraxctFileFromUrl: function(url) {
+  extractFileFromUrl: function(url) {
     if ((url) && (url !== '')) {
-      return url.substring(url.lastIndexOf('/') + 1);
+      let result = url.substring(url.lastIndexOf('/') + 1);
+      return result.replace('.json', '');
     }
   },
 

@@ -3,19 +3,19 @@
  *
  * Module:          ds_rpc
  * File Name:       db.js
- * Last Modified:   12/8/18 10:27 PM
+ * Last Modified:   12/8/18 6:33 PM
  *
  */
 
 'use strict';
 
-let optlyClients = {};
+let datafiles = {};
 let users = {};
 let tasks = {};
 
 // we are saving everything in memory for now
 let db = {
-  optlyClients: proc(optlyClients),
+  datafiles: proc(datafiles),
   users: proc(users),
   tasks: proc(tasks),
 };
@@ -39,7 +39,7 @@ function proc(container) {
       // we deep clone the object, to get our own reference
       //let _obj = clone(obj);
       let _obj = obj;
-      //console.log('saving', _obj);
+      // console.log('saving', _obj);
       if (!_obj.id) {
         // assign a random number as ID if none exists
         _obj.id = (Math.random() * 10000000) | 0;
@@ -61,6 +61,12 @@ function proc(container) {
         _bunch.push(container[item]);
       }
       return _bunch;
+    },
+    deleteList(itemList) {
+      for (let item of itemList) {
+        delete container[item];
+      }
+      return container.length;
     },
     delete(id) {
       delete container[id];

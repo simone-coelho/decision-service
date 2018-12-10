@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       config.js
- * Last Modified:   11/17/18 2:35 PM
+ * Last Modified:   12/8/18 2:07 PM
  *
  */
 
@@ -58,13 +58,19 @@ let config = {
   },
   db: {
     // Database
-    REDIS_PATH: process.env.REDIS_PATH || '127.0.0.1',
+
+    // *Comment the following line to enable the user profile.
+    REDIS_PATH: '',
+    // *Uncomment the following  line to enable the user profile.
+    // REDIS_PATH: process.env.REDIS_PATH || '127.0.0.1',
+    //
     REDIS_PORT: process.env.REDIS_PORT || '6379',
     REDIS_AUTH: process.env.REDIS_AUTH || '',
   },
   server: {
     // HTTP Server
     NODE_PORT: process.env.NODE_PORT || 9090,
+    WEBSOCKET_SERVER: process.env.WEBSOCKET_SERVER || 'ws://localhost:2222',
   },
 };
 

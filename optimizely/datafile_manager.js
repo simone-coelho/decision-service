@@ -3,44 +3,85 @@
  *
  * Module:          ds_rpc
  * File Name:       datafile_manager.js
- * Last Modified:   11/16/18 1:46 PM
+ * Last Modified:   12/8/18 3:59 PM
  *
  */
+'use strict';
 
 const fetch = require('node-fetch');
 const utils = require('../utilities/utils');
+const WebSocket = require('ws');
+const ReconnectingWebSocket = require('reconnecting-websocket');
 const config = require('../configuration/config');
 const sdk = config.sdk;
 const EventEmitter = require('events');
 const schedule = require('node-schedule');
+let datafileKeys = [];
 
 // EventEmitter object
 let datafileEvent = new EventEmitter();
 
-/**
- * Scheduler responsible for datafile download at predefined intervals.
- */
-schedule.scheduleJob(sdk.UPDATE_INTERVAL, function() {
-  const previousRevision = sdk.DATAFILE_REVISION;
-  fetchFileAsync(sdk.DATAFILE_URL).then(function(response) {
-    return response.json();
-  }).then(function(jsonData) {
-    let datafile = jsonData;
-    if (datafile) {
-      utils.writeFile(sdk.DATAFILE_PATH, JSON.stringify(datafile));
-      sdk.DATAFILE = datafile;
-      sdk.DATAFILE_REVISION = sdk.DATAFILE.revision;
-      console.log('Successfully downloaded datafile: ' + sdk.DATAFILE_URL + ' [Revision: ' +
-          sdk.DATAFILE.revision + ']');
-      if ((datafile) && (previousRevision !== sdk.DATAFILE.revision)) {
-        datafileEvent.emit('updated_datafile', sdk.DATAFILE, previousRevision,
-            sdk.DATAFILE_REVISION);
+/***** Start Websockets *****/
+const wsOptions = {
+  WebSocket: WebSocket,
+};
+
+// let wsClient = new WebSocket(config.server.WEBSOCKET_SERVER, '', null);
+const wsClient = new ReconnectingWebSocket(config.server.WEBSOCKET_SERVER, [], wsOptions);
+
+wsClient.onopen = function() {
+  console.log('Websocket client connected to datafile manager server.');
+  // ToDo - Set option on server start to request files or keys
+  // wsClient.send(JSON.stringify({type: 'get_sdk_keys', data: ''}), {}, null);
+  wsClient.send(JSON.stringify({type: 'get_datafiles', data: ''}), {}, null);
+};
+
+wsClient.onclose = function() {
+  console.log('Websocket client was disconnected from datafile manager server.');
+};
+
+// Log errors
+wsClient.onerror = function(error) {
+  console.error('WebSocket Error: ' + error.message);
+};
+
+// messages from the server
+wsClient.onmessage = function(message) {
+  let messageObj = JSON.parse(message.data);
+  switch (messageObj.type) {
+    case 'active_sdk_keys':
+      if (messageObj.data.length > 0) {
+        console.log('Websocket retrieved datafiles from CDN with SDK keys: ' + messageObj.data);
+        refreshDatafilesByKeys(messageObj.data);
+      } else {
+        console.log(
+            'Websocket did not receive any datafile SDK keys from the datafile manager server.');
       }
-    }
-  }).catch(function(error) {
-    console.log('Error: ', error);
-  });
-});
+      break;
+    case 'active_datafile':
+      console.log('Websocket received JSON datafile with SDK key: ' + messageObj.id);
+      refreshDatafile(messageObj.data, messageObj.id);
+      break;
+    case 'server_message':
+      console.log('WS server message: ', messageObj.data);
+      break;
+  }
+};
+
+/***** End Websockets *****/
+
+
+function refreshDatafilesByKeys(sdkKeys) {
+  datafileKeys = sdkKeys;
+  datafileEvent.emit('updated_datafile_keys', datafileKeys);
+}
+
+function refreshDatafile(datafile, key) {
+  if (!datafileKeys.includes(key)) {
+    datafileKeys.push(key);
+  }
+  datafileEvent.emit('updated_datafile', datafile, key);
+}
 
 /**
  * Fetches "async" a datafile from a CDN or remote server.
@@ -66,18 +107,19 @@ async function fetchFileSync(url) {
 /**
  * Fetches the SDK datafile from a CDN or remote server.
  *
- * @param url
+ * @param datafileKey
  * @param dest
  * @returns {Promise<*>}
  */
-async function fetchDatafile(url, dest) {
+async function fetchDatafile(datafileKey, dest) {
   try {
-    let datafile = await fetchFileSync(url);
+    let datafile = await fetchFileSync(
+        utils.placeHolder(config.sdk._SDK_URL, {SDK_KEY: datafileKey}));
     if (datafile) {
-      await utils.writeFile(sdk.DATAFILE_PATH, JSON.stringify(datafile));
       sdk.DATAFILE = datafile;
       sdk.DATAFILE_REVISION = sdk.DATAFILE.revision;
-      console.log('Successfully downloaded datafile: ' + sdk.DATAFILE_URL + ' [Revision: ' +
+      //await utils.writeFile(sdk.DATAFILE_PATH, JSON.stringify(datafile));
+      console.log('Successfully downloaded datafile: ' + datafileKey + ' [Revision: ' +
           sdk.DATAFILE.revision + ']');
     }
     return datafile;

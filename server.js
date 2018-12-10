@@ -3,7 +3,7 @@
  *
  * Module:          ds_rpc
  * File Name:       server.js
- * Last Modified:   11/17/18 2:12 PM
+ * Last Modified:   12/9/18 3:12 AM
  *
  */
 
@@ -13,19 +13,9 @@ const http = require('http');
 const url = require('url');
 const methods = require('./rpc/methods');
 const types = require('./types/types');
-const server_config = require('./configuration/config').server;
-const optimizely = require('./optimizely/optimizely_manager');
-
-let server = http.createServer(requestListener);
-const PORT = server_config.NODE_PORT;
-
-// Initialize and get the datafile on server start
-let appOptlyInstance;
-optimizely.getInstance().then(optly => {
-  appOptlyInstance = optly;
-}).catch(function() {
-  console.error('Unable to instantiate the Optimizely client');
-});
+const server_config = require('./configuration/config');
+const PORT = server_config.server.NODE_PORT;
+http.createServer(requestListener).listen(PORT);
 
 
 let routes = {
@@ -44,7 +34,7 @@ let routes = {
       let _json = JSON.parse(body); // might throw error
       let keys = Object.keys(_json);
       let promiseArr = [];
-
+      //console.log('Got to rpc');
       if (!body) {
         response.statusCode = 400;
         //noinspection
@@ -70,7 +60,7 @@ let routes = {
       }
 
       Promise.all(promiseArr).then(iter => {
-        console.log(iter);
+        //console.log(iter);
         let response = {};
         iter.forEach((val, index) => {
           response[keys[index]] = val;
@@ -96,11 +86,12 @@ let routes = {
     return new Promise(resolve => {
       let type;
       let method = {};
+      console.log('Got to describe');
 
       // set types
       type = types;
 
-      //set methods
+      // set methods
       for (let m in methods) {
         method[m] = JSON.parse(JSON.stringify(methods[m]));
       }
@@ -172,4 +163,3 @@ function requestListener(request, response) {
 }
 
 console.log(`Starting the server on port ${PORT}`);
-server.listen(PORT);
