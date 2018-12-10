@@ -114,7 +114,7 @@ async function fetchFileSync(url) {
 async function fetchDatafile(datafileKey, dest) {
   try {
     let datafile = await fetchFileSync(
-        utils.placeHolder(config.sdk._SDK_URL, {SDK_KEY: datafileKey}));
+        utils.placeHolder(config.sdk._SDK_URL_MANAGER, {SDK_KEY: datafileKey}));
     if (datafile) {
       sdk.DATAFILE = datafile;
       sdk.DATAFILE_REVISION = sdk.DATAFILE.revision;

@@ -17,13 +17,13 @@ function refreshDatafiles(sdkKeys) {
   datafileKeys = sdkKeys;
   for (const key of datafileKeys) {
     let datafile = fetchDatafile(key, true);
-    console.log('Updated datafile: ' + key + '[Revision: ' + datafile.revision + ']');
+    console.log('Updated datafile_json: ' + key + '[Revision: ' + datafile.revision + ']');
   }
 }
 
 function refreshDatafile(sdkKey) {
   let datafile = fetchDatafile(key, true);
-  console.log('Updated datafile: ' + sdkKey + '[Revision: ' + datafile.revision + ']');
+  console.log('Updated datafile_json: ' + sdkKey + '[Revision: ' + datafile.revision + ']');
 }
 
 function getDatafileKeys() {
@@ -36,7 +36,7 @@ function getDatafileKeys() {
 }
 
 /**
- * Fetches a datafile from a CDN or remote server.
+ * Fetches a datafile_json from a CDN or remote server.
  *
  * @param url
  * @returns {Promise<object>}
@@ -47,7 +47,7 @@ async function fetchFileSync(url) {
 }
 
 /**
- * Fetches the SDK datafile from a CDN or remote server.
+ * Fetches the SDK datafile_json from a CDN or remote server.
  *
  * @param datafileKey
  * @param fullRefresh
@@ -68,16 +68,16 @@ async function fetchDatafile(datafileKey, fullRefresh) {
       if (datafile) {
         let storedDatafile = {};
         storedDatafile.id = datafileKey;
-        storedDatafile.datafile = datafile;
+        storedDatafile.datafile_json = datafile;
         fileStorage.datafiles.save(storedDatafile);
-        console.log('Successfully downloaded datafile: ' + datafileKey);
+        console.log('Successfully downloaded datafile_json: ' + datafileKey);
         return datafile;
       }
     } else {
-      return datafile.datafile;
+      return datafile.datafile_json;
     }
   } catch (err) {
-    console.error('Unable to download datafile: ' + datafileKey + ' - ' + err);
+    console.error('Unable to download datafile_json: ' + datafileKey + ' - ' + err);
     return null;
   }
 }

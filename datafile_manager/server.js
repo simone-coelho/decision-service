@@ -43,11 +43,19 @@ wss.on('connection', function connection(ws, req) {
         console.log('Received message: %s', message);
         break;
       case 'get_datafiles':
-        for (const key of activeDatafileKeys) {
-          const datafile = fileStorage.datafiles.fetch(key);
+        if (activeDatafileKeys.length === 0) {
           ws.send(
-              JSON.stringify({type: 'active_datafile', data: datafile.datafile, id: key}));
-          console.log('Sent an updated datafile to all clients: ' + key);
+              JSON.stringify({
+                type: 'server_message',
+                data: 'Websocket server does not have any registered datafiles.',
+              }));
+        } else {
+          for (const key of activeDatafileKeys) {
+            const datafile = fileStorage.datafiles.fetch(key);
+            ws.send(
+                JSON.stringify({type: 'active_datafile', data: datafile.datafile_json, id: key}));
+            console.log('Sent an updated datafile to all clients: ' + key);
+          }
         }
         console.log('Received message: %s', message);
         break;
@@ -149,6 +157,22 @@ service.post('/update_sdk_keys', async (req, res) => {
     console.log('Received invalid update_sdk_keys request: ' +
         validate.ajv.errorsText(validate.update_sdk_keys.errors));
     res.send({status: 'error', message: validate.ajv.errorsText(validate.update_sdk_keys.errors)});
+  }
+});
+
+// Send datafile from cache storage
+service.get('/datafile/json/:datafile_key', async (req, res) => {
+  const datafile = await fileStorage.datafiles.fetch(req.params.datafile_key);
+  if (datafile) {
+    res.send(JSON.stringify(datafile.datafile_json));
+    console.log(
+        'Sent datafile from cache storage to client ' + req.connection.remoteAddress + ':' +
+        req.connection.remotePort + ' - ' + req.params.datafile_key);
+  } else {
+    res.send(JSON.stringify({
+      status: 'failed',
+      message: 'The specified SDK datafile key is not registered in this server.',
+    }));
   }
 });
 

@@ -30,6 +30,7 @@ let config = {
     SDK_URL: process.env.SDK_URL ||
         'https://cdn.optimizely.com/datafiles/L7omXhmSV2Qa1DTbW2JeVB.json',
     _SDK_URL:  'https://cdn.optimizely.com/datafiles/${SDK_KEY}.json',
+    _SDK_URL_MANAGER: 'http://localhost:2222/datafile/json/${SDK_KEY}',
 
     // Datafile settings
     DATAFILE_DIR: process.env.DATAFILE_DIR || 'datafiles/',
