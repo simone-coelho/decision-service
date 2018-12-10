@@ -1,10 +1,9 @@
 /*
  * Copyright (c) 2018, Simone A. Coelho - Optimizely
  *
- * Module:          ds_rpc
+ * Module:          datafile_manager
  * File Name:       json_schemas.js
- * Last Modified:   12/8/18 1:07 PM
- *
+ * Last Modified:   12/9/18 7:11 PM
  */
 
 /**

@@ -1,10 +1,9 @@
 /*
  * Copyright (c) 2018, Simone A. Coelho - Optimizely
  *
- * Module:          ds_rpc
+ * Module:          datafile_manager
  * File Name:       db.js
- * Last Modified:   12/8/18 6:33 PM
- *
+ * Last Modified:   12/9/18 6:39 PM
  */
 
 'use strict';

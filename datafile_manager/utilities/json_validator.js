@@ -1,10 +1,9 @@
 /*
  * Copyright (c) 2018, Simone A. Coelho - Optimizely
  *
- * Module:          ds_rpc
+ * Module:          datafile_manager
  * File Name:       json_validator.js
- * Last Modified:   12/8/18 1:06 PM
- *
+ * Last Modified:   12/9/18 3:29 AM
  */
 
 const schemas = require('./json_schemas');
