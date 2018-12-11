@@ -26,8 +26,8 @@ const wsOptions = {
   WebSocket: WebSocket,
 };
 
-// let wsClient = new WebSocket(config.server.WEBSOCKET_SERVER, '', null);
-const wsClient = new ReconnectingWebSocket(config.server.WEBSOCKET_SERVER, [], wsOptions);
+// let wsClient = new WebSocket(config.server.DATAFILE_SERVER, '', null);
+const wsClient = new ReconnectingWebSocket(config.server.DATAFILE_SERVER, [], wsOptions);
 
 wsClient.onopen = function() {
   console.log('Websocket client connected to datafile manager server.');

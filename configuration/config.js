@@ -73,7 +73,7 @@ let config = {
   server: {
     // HTTP Server
     NODE_PORT: process.env.NODE_PORT || 9090,
-    WEBSOCKET_SERVER: process.env.WEBSOCKET_SERVER || 'ws://localhost:2222',
+    DATAFILE_SERVER: process.env.DATAFILE_SERVER || 'ws://localhost:2222',
   },
 };
 

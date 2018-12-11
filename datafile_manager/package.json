@@ -13,6 +13,6 @@
     "node-fetch": "^2.3.0",
     "restana": "^2.5.0",
     "string-placeholder": "^1.0.1",
-    "ws": "file:node_modules/ws"
+    "ws": "^6.1.2"
   }
 }
