@@ -130,6 +130,12 @@ async function updateDatafiles(data, fullRefresh) {
   }
 }
 
+async function updateDatafile(key) {
+  let datafile = await fileManager.downloadFileSync(key, true);
+  activeDatafileKeys = fileManager.getAllDatafileKeys();
+  return datafile;
+}
+
 // Http / Rest API
 service.post('/datafile_update', async (req, res) => {
   let result = await updateDatafiles(req.body, false);
@@ -162,7 +168,13 @@ service.post('/update_sdk_keys', async (req, res) => {
 
 // Send datafile from cache storage
 service.get('/datafile/json/:datafile_key', async (req, res) => {
-  const datafile = await fileStorage.datafiles.fetch(req.params.datafile_key);
+  let datafile = await fileStorage.datafiles.fetch(req.params.datafile_key);
+
+  if (!datafile) {
+    datafile = {};
+    datafile.datafile_json = await updateDatafile(req.params.datafile_key);
+  }
+
   if (datafile) {
     res.send(JSON.stringify(datafile.datafile_json));
     console.log(

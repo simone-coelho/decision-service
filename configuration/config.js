@@ -29,7 +29,9 @@ let config = {
     SDK_KEY: process.env.SDK_KEY || 'L7omXhmSV2Qa1DTbW2JeVB',
     SDK_URL: process.env.SDK_URL ||
         'https://cdn.optimizely.com/datafiles/L7omXhmSV2Qa1DTbW2JeVB.json',
+    // ******* No longer implemented *******
     _SDK_URL:  'https://cdn.optimizely.com/datafiles/${SDK_KEY}.json',
+    // Use this constant for the endpoint to connect to the datafile manager
     _SDK_URL_MANAGER: 'http://localhost:2222/datafile/json/${SDK_KEY}',
 
     // Datafile settings

@@ -83,6 +83,11 @@ function refreshDatafile(datafile, key) {
   datafileEvent.emit('updated_datafile', datafile, key);
 }
 
+// ToDo - Register new file with datafile manager via Websockets
+function wsRegisterNewDatafile(key) {
+  wsClient.send(JSON.stringify({type: 'register_datafile', data: key}), {}, null);
+}
+
 /**
  * Fetches "async" a datafile from a CDN or remote server.
  *
