@@ -52,3 +52,6 @@ Temporary Items
 
 node_modules
 npm_debug.log
+
+.idea/
+*.iml
