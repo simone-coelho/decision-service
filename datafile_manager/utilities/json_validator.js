@@ -6,18 +6,24 @@
  * Last Modified:   12/9/18 7:19 PM
  */
 
+/**
+ * Validate incoming JSON payload
+ * @type {{update_sdk_keys}}
+ */
 const schemas = require('./json_schemas');
 const Ajv = require('ajv');
 const ajv = new Ajv({
-                        allErrors: true, useDefaults: true
-                    });
+  allErrors: true,
+  useDefaults: true,
+});
 
 /**
  * JSON Object Schema Validators
  *
  */
 let validators = {
-    update_sdk_keys: ajv.compile(schemas.update_sdk_keys), ajv: ajv
+  update_sdk_keys: ajv.compile(schemas.update_sdk_keys),
+  ajv: ajv,
 };
 
 module.exports = validators;
