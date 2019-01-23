@@ -29,7 +29,7 @@ The following instructions will get the project up and running on your local mac
 
 ### Running the server
 
-1. Start the local Redis server.
+1. Start the local Redis server if enabling the "User Profile" service.
 2. Run 'server.js' in the root directory.
 
 ----
