@@ -11,15 +11,18 @@
  * Used to validate the objects passed in as parameters.
  */
 const schemas = {
-    update_sdk_keys: {
-        'properties': {
-            'sdk_keys': {
-                'type': 'array', 'items': {
-                    'type': 'string'
-                }, 'minItems': 1, 'uniqueItems': true
-            }
-        }
-    }
+  update_sdk_keys: {
+    'properties': {
+      'sdk_keys': {
+        'type': 'array',
+        'items': {
+          'type': 'string',
+        },
+        'minItems': 1,
+        'uniqueItems': true,
+      },
+    },
+  },
 };
 
 module.exports = schemas;
