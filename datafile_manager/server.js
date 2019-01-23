@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2018, Simone A. Coelho - Optimizely
  *
- * Module:          datafile_manager
- * File Name:       server.js
- * Last Modified:   12/9/18 7:19 PM
+ *  * Copyright (c) 2018, Simone A. Coelho - Optimizely
+ *  *
+ *  * Module:          datafile_service
+ *  * File Name:       server.js
+ *  * Last Modified:   12/13/18 3:02 PM
+ *
  */
 
-// server.js
 'use strict';
 
 const fs = require('fs');
@@ -22,15 +23,44 @@ service.use(bodyParser.json());
 const port = process.env.PORT || 2222;
 const wss = new WebSocket.Server({server: httpServer});
 
+// Array list of all available datafile keys.
 let activeDatafileKeys;
 
+/**
+ * If "activeDatafileKeys" is defined on server start it will attempt to download
+ * and cache the specified datafiles immediately and push them via websockets to
+ * all connected clients.
+ */
 if (process.env.DATAFILE_KEYS) {
     activeDatafileKeys = [process.env.DATAFILE_KEYS];
 } else {
-    activeDatafileKeys = [];
-    //['CNPV5jgsCDgsDX4fgfAeWn', 'L7omXhmSV2Qa1DTbW2JeVB'];
+    //activeDatafileKeys = [];
+    activeDatafileKeys = ['CNPV5jgsCDgsDX4fgfAeWn', 'L7omXhmSV2Qa1DTbW2JeVB'];
 }
 
+function noop() {}
+
+function heartbeat() {
+    this.isAlive = true;
+}
+
+wss.on('connection', function connection(ws) {
+    ws.isAlive = true;
+    ws.on('pong', heartbeat);
+});
+
+const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+        if (ws.isAlive === false) return ws.terminate();
+
+        ws.isAlive = false;
+        ws.ping(noop);
+    });
+}, 30000);
+
+/**
+ * Websockets message handler for individual connections.
+ */
 wss.on('connection', function connection (ws, req) {
     const ip = req.connection.remoteAddress;
 
@@ -38,11 +68,13 @@ wss.on('connection', function connection (ws, req) {
 
         let messageObj = JSON.parse(message);
         switch (messageObj.type) {
+            // Returns a list of all cached and active datafile keys.
             case 'get_sdk_keys':
                 ws.send(JSON.stringify(
                     {type: 'active_sdk_keys', data: activeDatafileKeys}));
                 console.log('Received message: %s', message);
                 break;
+            // Returns all of the cached JSON datafiles one at a time.
             case 'get_datafiles':
                 if (activeDatafileKeys.length === 0) {
                     ws.send(JSON.stringify({
@@ -71,9 +103,19 @@ wss.on('connection', function connection (ws, req) {
                            }));
 });
 
-// Broadcast to all.
+/**
+ * Helper function to broadcast to all connected clients.
+ *
+ * @param message
+ *   The name of the message or type of message.
+ * @param data
+ *   Data to be sent.
+ * @param id
+ *   Identifier for the message.
+ */
 wss.broadcast = function broadcast (message, data, id) {
     switch (message) {
+        // Sends a list of active datafile key(s) to all connected clients.
         case 'active_sdk_keys':
             wss.clients.forEach(function each (client) {
                 if (client.readyState === WebSocket.OPEN) {
@@ -84,6 +126,7 @@ wss.broadcast = function broadcast (message, data, id) {
             console.log(
                 'Broadcast active datafile keys to all clients: ' + data);
             break;
+        // Sends an individual JSON datafile to all connected clients.
         case 'active_datafiles':
             wss.clients.forEach(function each (client) {
                 if (client.readyState === WebSocket.OPEN) {
@@ -97,10 +140,18 @@ wss.broadcast = function broadcast (message, data, id) {
     }
 };
 
-service.start(port).then((server) => {
-    console.log(`Starting the server on port ${port}`);
-});
-
+/**
+ * Updates the local file storage with new datafiles specified by the array of
+ * datafile keys passed in the data parameter. It also broadcasts or pushes the
+ * new JSON datafiles to all connected clients via websockets.
+ *
+ * @param data
+ *   JSON object from a websocket message or http body payload.
+ * @param fullRefresh
+ *   Determines if the cached local storage should be cleared completely.
+ * @returns {Promise<object>}
+ *   JSON object websocket message.
+ */
 async function updateDatafiles (data, fullRefresh) {
     let validJSON = validate.update_sdk_keys(data);
     if (validJSON) {
@@ -145,23 +196,54 @@ async function updateDatafiles (data, fullRefresh) {
     }
 }
 
+/**
+ * Downloads a datafile from the CDN and updates or adds a single datafile in
+ * local storage.
+ *
+ * @param key
+ *   Datafile SDK key for the file that needs to be updated.
+ * @returns {Promise<object>}
+ */
 async function updateDatafile (key) {
     let datafile = await fileManager.downloadFileSync(key, true);
     activeDatafileKeys = fileManager.getAllDatafileKeys();
     return datafile;
 }
 
-// Http / Rest API
+// Http and Rest API
+
+/**
+ * "datafile_update" endpoint responsible for adding or updating a datfile(s) to/in
+ * the cached local storage from the JSON array of datafile keys contained in the
+ * body payload. This does not remove datafiles that are not included in the input array.
+ *
+ * Once the local storage is update it will push the new files via websockets to
+ * all connected clients.
+ */
 service.post('/datafile_update', async (req, res) => {
     let result = await updateDatafiles(req.body, false);
     res.send(result);
 });
 
+/**
+ * "datafile_full_refresh" endpoint responsible for adding the files contained in
+ * the cached local storage from the JSON array of datafile keys contained in the
+ * body payload. This clears all datafiles in the storage prior to adding any new
+ * files contained in the input array of datafile keys.
+ *
+ * Once the local storage is update it will push the new files via websockets to
+ * all connected clients.
+ */
 service.post('/datafile_full_refresh', async (req, res) => {
     let result = await updateDatafiles(req.body, true);
     res.send(result);
 });
 
+/**
+ * "update_sdk_keys" endpoint responsible for notifying all connected clients of
+ * updated or newly added datafile keys. Connected clients will then download
+ * the updated files from the preconfigured CDN or from this server.
+ */
 service.post('/update_sdk_keys', async (req, res) => {
     let validJSON = validate.update_sdk_keys(req.body);
     if (validJSON) {
@@ -186,7 +268,12 @@ service.post('/update_sdk_keys', async (req, res) => {
     }
 });
 
-// Send datafile from cache storage
+/**
+ * "/datafile/json/:datafile_key" endpoint responsible for returning a specific
+ * datafile from the key parameter. If the file exists in local storage that file
+ * will be returned. If the specified datafile is not found it will be retrieved
+ * from the preconfigured CDN, saved to local storage and returned to the client.
+ */
 service.get('/datafile/json/:datafile_key', async (req, res) => {
     let datafile = await fileStorage.datafiles.fetch(req.params.datafile_key);
 
@@ -209,5 +296,13 @@ service.get('/datafile/json/:datafile_key', async (req, res) => {
     }
 });
 
-
+// Start the server.
+// ToDo Add "/" for health check
+service.start(port).then((server) => {
+    console.log(`Starting the server on port ${port}`);
+    if (activeDatafileKeys.length > 0) {
+        let _keys = {sdk_keys: activeDatafileKeys};
+        updateDatafiles(_keys);
+    }
+});
 
