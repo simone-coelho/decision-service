@@ -20,24 +20,24 @@ let config = {
     activation_interval: 0,
 
     // Using Project ID
-    PROJECT_ID: process.env.PROJECT_ID || '12101591721',
-    SDK_URL_ID: process.env.SDK_URL_ID ||
-        'https://cdn.optimizely.com/json/12101591721.json',
-    _SDK_URL_ID: 'https://cdn.optimizely.com/json/${PROJECT_ID}.json',
+    //PROJECT_ID: process.env.PROJECT_ID || '12101591721',
+    //SDK_URL_ID: process.env.SDK_URL_ID ||
+//        'https://cdn.optimizely.com/json/12101591721.json',
+    //_SDK_URL_ID: 'https://cdn.optimizely.com/json/${PROJECT_ID}.json',
 
     // Using SDK Key
-    SDK_KEY: process.env.SDK_KEY || 'L7omXhmSV2Qa1DTbW2JeVB',
-    SDK_URL: process.env.SDK_URL ||
-        'https://cdn.optimizely.com/datafiles/L7omXhmSV2Qa1DTbW2JeVB.json',
+    //SDK_KEY: process.env.SDK_KEY || 'L7omXhmSV2Qa1DTbW2JeVB',
+    //SDK_URL: process.env.SDK_URL ||
+    //    'https://cdn.optimizely.com/datafiles/L7omXhmSV2Qa1DTbW2JeVB.json',
     // ******* No longer implemented *******
     _SDK_URL:  'https://cdn.optimizely.com/datafiles/${SDK_KEY}.json',
     // Use this constant for the endpoint to connect to the datafile manager
-    _SDK_URL_MANAGER: 'http://localhost:2222/datafile/json/${SDK_KEY}',
+    _SDK_URL_PATH: '/datafile/json/${SDK_KEY}',
 
     // Datafile settings
-    DATAFILE_DIR: process.env.DATAFILE_DIR || 'datafiles/',
-    DATAFILE_NAME: process.env.DATAFILE_NAME || 'datafile.json',
-    DATAFILE_PATH: process.env.DATAFILE_PATH || '',
+    //DATAFILE_DIR: process.env.DATAFILE_DIR || 'datafiles/',
+    //DATAFILE_NAME: process.env.DATAFILE_NAME || 'datafile.json',
+    //DATAFILE_PATH: process.env.DATAFILE_PATH || '',
     get DATAFILE_URL() {
       return utils.placeHolder(this._SDK_URL,
           {SDK_KEY: this.SDK_KEY});
@@ -48,7 +48,7 @@ let config = {
     },
 
     // Active datafile
-    DATAFILE: null,
+    //DATAFILE: null,
     DATAFILE_REVISION: 0,
 
     // Datafile update interval currently defaults to 15 minutes. Polling fir updated
@@ -73,19 +73,13 @@ let config = {
   server: {
     // HTTP Server
     NODE_PORT: process.env.NODE_PORT || 9090,
-    DATAFILE_SERVER: process.env.DATAFILE_SERVER || 'ws://localhost:2222',
+    // GRPC Server
+    GRPC_PORT: `0.0.0.0:${process.env.GRPC_PORT || '1337'}`,
+    // Websocket Server
+    DATAFILE_SERVER: process.env.DATAFILE_SERVER || 'localhost:2222',
   },
 };
 
-//// Default datafile URL paths by Key and Project ID
-//config.sdk.DATAFILE_URL = utils.placeHolder(config.sdk._SDK_URL,
-//    {SDK_KEY: config.sdk.SDK_KEY});
-//
-//config.sdk.DATAFILE_URL_ID = utils.placeHolder(config.sdk._SDK_URL_ID,
-//    {SDK_KEY: config.sdk.SDK_KEY});
-
-// Directory to save datafile
-config.sdk.DATAFILE_PATH = config.sdk.DATAFILE_DIR + config.sdk.DATAFILE_NAME;
 
 // Export
 module.exports = config;
