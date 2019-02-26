@@ -1,6 +1,6 @@
 # Node.js Optimizely RPC Decision Service
 
-For multi-tenant / multi-project support use: Multi-Tenant Branch(https://github.com/simone-coelho/decision-service/tree/multi-tenant-filemgr)
+For multi-tenant / multi-project support use: [Multi-Tenant Branch](https://github.com/simone-coelho/decision-service/tree/multi-tenant-filemgr)
 
 RPC decision service that is implemented using json over http. The API replicates the functionality of the SDK in a centralized location. It also implementes user profiles and datafile management. With that in mind, the application exposes two endpoints. The "rpc" endpoint accepts the different methods as JSON that replicate the SDK methods and the "describe" endpoint which returns the descriptions of the different methods and data types. This is not a Rest based API but a "json over http" API. You will only need to communicate with a single endpoint.
 
